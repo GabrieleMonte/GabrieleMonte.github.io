@@ -56,9 +56,9 @@
         <li class="nav-item">
           <a class="nav-link js-scroll-trigger" href="#awards">Awards &amp; Skills</a>
         </li>
-     <!--   <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="http://ontrack-gaas.com/montefalcone">Academic Coaching </a>
-        </li> -->
+      <li class="nav-item">
+          <a class="nav-link js-scroll-trigger" href="http://physicsconcerto.com">Physics Concerto </a>
+        </li> 
       </ul>
     </div>
   </nav>
@@ -276,6 +276,39 @@ other recently developed ML methods that inpaint pure CMB maps. For more info cl
         <br>
       <p>In my free time, I enjoy cooking typical Italian dishes. Whenever I can, I spend time outdoors, running, hiking and riding my motorcycle.</p>
       </div>
+    </section>
+
+  <hr class="m-0">
+    <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="cv">
+      <div class="w-100">
+        <h2 class="mb-5">Currilucum Vitae</h2>
+        <!-- This button opens the CV PDF modal -->
+<button id="openModal">Open CV</button>
+
+<!-- The modal container -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <object data="/pdfs/Gab_Montefalcone_CV.pdf" type="application/pdf" width="100%" height="600px">
+            <p>Unable to display PDF.</p>
+        </object>
+        <button id="closeModal">Close</button>
+    </div>
+</div>
+
+<script>
+    // JavaScript to show and hide the modal
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("openModal");
+    var span = document.getElementById("closeModal");
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+</script>
     </section>
 
 <hr class="m-0">

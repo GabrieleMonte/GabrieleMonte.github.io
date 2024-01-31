@@ -284,6 +284,28 @@
       </div>
       
     </section>
+
+  <hr class="m-0">
+    <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="cv">
+      <div class="w-100">
+        <h2 class="mb-5">My ArXiv Readings</h2>
+<div class="subheading mb-3"></div>
+    <div> <p class="lead mb-5"> Here you can find a list of Arxiv papers I've found interesting, organized by month. It's a personal selection reflecting my interests, not an expert classification, as I'm just sharing what catches my eye in the world of academia.
+    </p>
+      </div>
+     <div class="subheading mb-3" onclick="togglePapers('dec2023')">December 2023 </div>
+    </div>
+    <ul id="dec2023" class="papers">
+        <li>Paper 1 Title</li>
+        <li>Paper 2 Title</li>
+    </ul>
+     <div class="subheading mb-3" onclick="togglePapers('nov2023')">November 2023 </div>
+    </div>
+    <ul id="nov2023" class="papers">
+        <li>Paper 1 Title</li>
+        <li>Paper 2 Title</li>
+    </ul>
+    </section>
     
     <hr class="m-0">
 
@@ -363,7 +385,16 @@
 
   <!-- Custom scripts for this template -->
   <script src="js/resume.min.js"></script>
-
+<script>
+  function togglePapers(monthId) {
+    var element = document.getElementById(monthId);
+    if (element.style.display === "block") {
+        element.style.display = "none";
+    } else {
+        element.style.display = "block";
+    }
+}
+</script>
 </body>
 
 </html>

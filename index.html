@@ -297,7 +297,7 @@
         <div> <p class="lead mb-5"> Here you can find a list of Arxiv papers I've found interesting, organized by month. It's a personal selection reflecting my interests, not an expert classification, as I'm just sharing what catches my eye in the world of academia.</p>
       </div>
      <div class="subheading mb-3" onclick="togglePapers('jan2024')"><span>January 2024  &#x25BC;</span></div>
-    <ul id="jan2024" class="fa-ul mb-0">
+    <ul id="jan2024" class="subheading mb-3">
         <li>arXiv2401.00687: Constraining MeV to 10 GeV majoron by Big Bang Nucleosynthesis</li>
         <li>arXiv2401.02075: SPT Clusters with DES and HST Weak Lensing. II. Cosmological Constraints from the Abundance of Massive Halos</li>
         <li>arXiv2401.02929: The Dark Energy Survey: Cosmology Results With ∼1500 New High-redshift Type Ia Supernovae Using The Full 5-year Dataset</li>
@@ -324,7 +324,7 @@
         <li>arXiv2401.15054: The 2024 BBN baryon abundance update</li>
     </ul>
      <div class="subheading mb-3" onclick="togglePapers('dec2023')"><span>December 2023  &#x25BC;</span></div>
-    <ul id="dec2023" class="fa-ul mb-0">
+    <ul id="dec2023" class="subheading mb-3">
         <li>arXiv2312.02954: Improving Constraints on Inflation with CMB Delensing </li>
         <li>arXiv2312.01977: Cosmological constraints on early dark energy from the full shape analysis of eBOSS DR16</li>
         <li>arXiv2312.01410: The Yukawa-Coupled Dark Sector Model and Cosmological Tensions </li>
@@ -345,7 +345,7 @@
         <li>arXiv2312.17499: Signatures of inhomogeneous dark matter annihilation on 21-cm</li>
     </ul>
      <div class="subheading mb-3" onclick="togglePapers('nov2023')"><span>November 2023  &#x25BC;</span></div>
-    <ul id="nov2023" class="fa-ul mb-0">
+    <ul id="nov2023" class="subheading mb-3">
         <li>arXiv2311.02148 : Dissipative Dark Substructure: The Consequences of Atomic Dark Matter on Milky Way Analog Subhalos</li>
         <li>arXiv2311.04822 : Slow-rolling scalar dynamics and as solution for the Hubble tension</li>
         <li>arXiv2311.04955: Cosmological Phase Transitions and the Swampland</li>
@@ -443,14 +443,6 @@
   <!-- Custom scripts for this template -->
   <script src="js/resume.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Hide all lists when the page loads
-    var allLists = document.querySelectorAll('.fa-ul.mb-0');
-    allLists.forEach(function(list) {
-        list.style.display = 'none';
-    });
-});
-
 function togglePapers(id) {
     var element = document.getElementById(id);
     if (element.style.display === 'block') {

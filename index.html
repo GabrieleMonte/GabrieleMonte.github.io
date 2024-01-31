@@ -296,7 +296,7 @@
         <div class="subheading mb-3"></div>
         <div> <p class="lead mb-5"> Here you can find a list of Arxiv papers I've found interesting, organized by month. It's a personal selection reflecting my interests, not an expert classification, as I'm just sharing what catches my eye in the world of academia.</p>
       </div>
-     <div class="subheading mb-3" onclick="togglePapers('jan2024')"><span>January 2024  &#x25BC;</span></div>
+     <div class="subheading mb-3" onclick="togglePapers('jan2024')"> January 2024  <span class="arrow">&#x25BA;</span></div>
     <ul id="jan2024" class="fa-uull mb-0">
         <li>arXiv2401.00687: Constraining MeV to 10 GeV majoron by Big Bang Nucleosynthesis</li>
         <li>arXiv2401.02075: SPT Clusters with DES and HST Weak Lensing. II. Cosmological Constraints from the Abundance of Massive Halos</li>
@@ -323,7 +323,7 @@
         <li>arXiv2401.14450: Self-interacting dark matter solves the final parsec problem of supermassive black hole mergers</li>
         <li>arXiv2401.15054: The 2024 BBN baryon abundance update</li>
     </ul>
-     <div class="subheading mb-3" onclick="togglePapers('dec2023')"><span>December 2023  &#x25BC;</span></div>
+     <div class="subheading mb-3" onclick="togglePapers('dec2023')">December 2023 <span class="arrow">&#x25BA;</span></div>
     <ul id="dec2023" class="fa-uull mb-0">
         <li>arXiv2312.02954: Improving Constraints on Inflation with CMB Delensing </li>
         <li>arXiv2312.01977: Cosmological constraints on early dark energy from the full shape analysis of eBOSS DR16</li>
@@ -344,7 +344,7 @@
         <li>arXiv2312.17246: Dark matter freeze-in from non-equilibrium QFT: towards a consistent treatment of thermal effects</li>
         <li>arXiv2312.17499: Signatures of inhomogeneous dark matter annihilation on 21-cm</li>
     </ul>
-     <div class="subheading mb-3" onclick="togglePapers('nov2023')"><span>November 2023  &#x25BC;</span></div>
+     <div class="subheading mb-3" onclick="togglePapers('nov2023')">November 2023 <span class="arrow">&#x25BA;</span></div>
     <ul id="nov2023" class="fa-uull mb-0">
         <li>arXiv2311.02148 : Dissipative Dark Substructure: The Consequences of Atomic Dark Matter on Milky Way Analog Subhalos</li>
         <li>arXiv2311.04822 : Slow-rolling scalar dynamics and as solution for the Hubble tension</li>
@@ -450,13 +450,15 @@ document.addEventListener('DOMContentLoaded', function() {
         list.style.display = 'none';
     });
 });
-
 function togglePapers(id) {
     var element = document.getElementById(id);
+    var arrow = element.previousElementSibling.querySelector('.arrow'); // Find the arrow span
     if (element.style.display === 'block') {
         element.style.display = 'none';
+        arrow.innerHTML = '&#x25BA;'; // Arrow points right when list is hidden
     } else {
         element.style.display = 'block';
+        arrow.innerHTML = '&#x25BC;'; // Arrow points down when list is visible
     }
 }
 </script>

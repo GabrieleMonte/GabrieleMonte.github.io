@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>2-Mile Daily Challenge | Gabriele Montefalcone</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/resume.min.css" rel="stylesheet">
+
+  <!-- Calendar library -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+  <!-- Custom CSS -->
+  <style>
+    #calendar {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .stats-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .stats-item {
+      display: inline-block;
+      margin: 10px 30px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #38bd6d;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="/">
+      <span class="d-block d-lg-none">Gabriele Montefalcone</span>
+      <span class="d-none d-lg-block">
+        <img class="img-profile" src="img/gab6.jpg" alt="">
+      </span>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link js-scroll-trigger" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link js-scroll-trigger" href="/2MileChallenge">2-Mile Challenge</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container-fluid p-0">
+    <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="challenge">
+      <div class="w-100">
+        <h2 class="mb-5">2-Mile Daily Running Challenge</h2>
+        <p class="lead mb-4">A personal challenge: running 2 miles every day starting December 7. This page shows progress including daily runs, total mileage, and a running streak calendar.</p>
+
+        <div id="calendar"></div>
+        <div class="stats-container">
+          <div class="stats-item">Total Days Run: <span id="days-run">0</span></div>
+          <div class="stats-item">Total Mileage: <span id="total-mileage">0</span> km</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Strava API Fetching & Calendar Rendering -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const calendarEl = document.getElementById('calendar');
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 'auto',
+        events: []
+      });
+      calendar.render();
+
+      async function fetchStravaData() {
+        const response = await fetch('https://www.strava.com/api/v3/athlete/activities?per_page=200', {
+          headers: {
+            'Authorization': 'Bearer 4d280d15d5f66b934bc1554465c674bf82f911fc'
+          }
+        });
+        const activities = await response.json();
+        let totalMileage = 0;
+        let totalDays = 0;
+
+        activities.forEach(activity => {
+          const distanceKm = activity.distance / 1000;
+          if (activity.type === 'Run' && distanceKm >= 3 && distanceKm <= 4 && new Date(activity.start_date) >= new Date('2023-12-07')) {
+            totalMileage += distanceKm;
+            totalDays++;
+            calendar.addEvent({
+              title: `${distanceKm.toFixed(2)} km`,
+              start: activity.start_date
+            });
+          }
+        });
+
+        document.getElementById('days-run').innerText = totalDays;
+        document.getElementById('total-mileage').innerText = totalMileage.toFixed(2);
+      }
+
+      fetchStravaData();
+    });
+  </script>
+
+  <!-- Instructions for GitHub Deployment -->
+  <!--
+  Deployment Steps:
+  1. Place this file as "2MileChallenge.html" in your GitHub Pages repo.
+  2. Push changes to GitHub. The page will be accessible at:
+     https://gabrielemontefalcone.com/2MileChallenge
+  -->
+
+</body>
+
+</html>

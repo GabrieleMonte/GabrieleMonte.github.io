@@ -116,7 +116,10 @@
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         height: 'auto',
-        events: []
+        events: [],
+        eventContent: function (arg) {
+          return { html: `<div style="white-space: normal; word-wrap: break-word;">${arg.event.title}</div>` };
+        }
       });
       calendar.render();
 
@@ -142,13 +145,13 @@
             const movingTimeMinutes = (activity.moving_time / 60).toFixed(2);
             const avgHeartRate = activity.hasOwnProperty('average_heartrate') ? `${activity.average_heartrate} bpm` : 'N/A';
 
-            if (activity.type === 'Run' && distanceKm >= 3 && distanceKm <= 4 && new Date(activity.start_date) >= new Date('2023-12-07')) {
-              totalMileage += distanceKm;
+            if (activity.type === 'Run' && distanceKm >= 3.2 && distanceKm <= 3.8 && new Date(activity.start_date) >= new Date('2023-12-07')) {
+              totalMileage += distanceKm / 1.60934;
               totalDays++;
               calendar.addEvent({
-                title: `${distanceKm.toFixed(2)} km | ${movingTimeMinutes} min | Avg HR: ${avgHeartRate}`,
+                title: `${distanceKm.toFixed(2)} km<br>${movingTimeMinutes} min<br>Avg HR: ${avgHeartRate}`,
                 start: activity.start_date,
-                allDay: false // Disable full-day highlighting for minimal appearance
+                allDay: false // Ensure minimal highlighting and proper text wrapping
               });
             }
           });

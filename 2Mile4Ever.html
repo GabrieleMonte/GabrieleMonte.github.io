@@ -54,19 +54,6 @@
       position: relative;
       padding-left: 15px;
     }
-
-    /* Blue bullet point for each run */
-    .fc-event-main::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      background-color: #007bff;
-      border-radius: 50%;
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-    }
   </style>
 </head>
 
@@ -167,7 +154,7 @@
         const startTime = new Date(activity.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const activityDate = new Date(activity.start_date).toISOString().split('T')[0];
 
-        if (activity.type === 'Run' && distanceKm >= 3.2 && distanceKm <= 3.55 && new Date(activity.start_date) >= new Date('2024-12-07')) {
+        if (activity.type === 'Run' && distanceKm >= 3.1 && distanceKm <= 3.7 && new Date(activity.start_date) >= new Date('2024-12-07')) {
           totalMileage += distanceKm / 1.60934;
           runDatesSet.add(activityDate);
           calendar.addEvent({

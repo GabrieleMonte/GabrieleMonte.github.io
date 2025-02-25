@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
-  <!-- Custom CSS -->
+<!-- Custom CSS -->
   <style>
     #calendar {
       max-width: 900px;
@@ -24,16 +24,33 @@
       padding: 20px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
+    .fc-daygrid-event .fc-event-title {
+      white-space: normal !important;
+      word-wrap: break-word;
+      font-size: 0.9rem;
+      line-height: 1.2rem;
+    }
+
     .stats-container {
       text-align: center;
       margin-top: 30px;
     }
+
     .stats-item {
       display: inline-block;
       margin: 10px 30px;
       font-size: 1.5rem;
       font-weight: bold;
       color: #38bd6d;
+    }
+
+    /* Force no background highlighting */
+    .fc-event-main {
+      background-color: transparent !important;
+      border: none !important;
+      color: #212529 !important;
+      white-space: normal !important;
     }
   </style>
 </head>

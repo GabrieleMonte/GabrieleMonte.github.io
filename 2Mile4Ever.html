@@ -128,7 +128,9 @@
 
   <!-- Updated Strava API Integration with Full Background Fix and Start Time -->
   <script>
-    document.addEventListener('DOMContentLoaded', async function() {
+    const auth_link = "https://www.strava.com/oauth/token";
+
+    function updateCalendarWithActivities(activities) {
       const calendarEl = document.getElementById('calendar');
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
@@ -140,68 +142,85 @@
       });
       calendar.render();
 
-      const accessToken = "413d32506a59d16e1f367b3f3ec5138c7b0155d8"; // Updated access token
+      let totalMileage = 0;
+      const runDatesSet = new Set();
 
-      async function fetchStravaData(token) {
-        try {
-          const response = await fetch('https://www.strava.com/api/v3/athlete/activities?per_page=200', {
-            headers: { 'Authorization': `Bearer ${token}` }
+      activities.forEach(activity => {
+        const distanceKm = activity.distance / 1000;
+        const movingTimeMinutes = (activity.moving_time / 60).toFixed(2);
+        const avgHeartRate = activity.hasOwnProperty('average_heartrate') ? `${activity.average_heartrate} bpm` : 'N/A';
+        const startTime = new Date(activity.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const activityDate = new Date(activity.start_date).toISOString().split('T')[0];
+
+        if (activity.type === 'Run' && distanceKm >= 3 && distanceKm <= 4 && new Date(activity.start_date) >= new Date('2023-12-07')) {
+          totalMileage += distanceKm;
+          runDatesSet.add(activityDate);
+          calendar.addEvent({
+            title: `${distanceKm.toFixed(2)} km<br>Start: ${startTime}<br>${movingTimeMinutes} min<br>Avg HR: ${avgHeartRate}`,
+            start: activity.start_date,
+            allDay: false
           });
+        }
+      });
 
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
-          }
-
-          const activities = await response.json();
-          let totalMileage = 0;
-          const runDatesSet = new Set();
-
-          activities.forEach(activity => {
-            const distanceKm = activity.distance / 1000;
-            const movingTimeMinutes = (activity.moving_time / 60).toFixed(2);
-            const avgHeartRate = activity.hasOwnProperty('average_heartrate') ? `${activity.average_heartrate} bpm` : 'N/A';
-            const startTime = new Date(activity.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const activityDate = new Date(activity.start_date).toISOString().split('T')[0];
-
-            if (activity.type === 'Run' && distanceKm >= 3 && distanceKm <= 4 && new Date(activity.start_date) >= new Date('2023-12-07')) {
-              totalMileage += distanceKm;
-              runDatesSet.add(activityDate);
-              calendar.addEvent({
-                title: `${distanceKm.toFixed(2)} km<br>Start: ${startTime}<br>${movingTimeMinutes} min<br>Avg HR: ${avgHeartRate}`,
-                start: activity.start_date,
-                allDay: false
-              });
-            }
-          });
-
-          // Calculate consecutive days run since Dec 7, 2024
-          let consecutiveDays = 0;
-          let currentDate = new Date('2023-12-07');
-          const today = new Date();
-          while (currentDate <= today) {
-            const dateStr = currentDate.toISOString().split('T')[0];
-            if (runDatesSet.has(dateStr)) {
-              consecutiveDays++;
-              currentDate.setDate(currentDate.getDate() + 1);
-            } else {
-              break;
-            }
-          }
-
-          document.getElementById('days-run').innerText = consecutiveDays;
-          document.getElementById('total-mileage').innerText = totalMileage.toFixed(2);
-        } catch (error) {
-          console.error('Failed to fetch Strava data:', error);
-          alert('Failed to load Strava data. Please ensure permissions are correct.');
+      let consecutiveDays = 0;
+      let currentDate = new Date('2023-12-07');
+      const today = new Date();
+      while (currentDate <= today) {
+        const dateStr = currentDate.toISOString().split('T')[0];
+        if (runDatesSet.has(dateStr)) {
+          consecutiveDays++;
+          currentDate.setDate(currentDate.getDate() + 1);
+        } else {
+          break;
         }
       }
 
-      fetchStravaData(accessToken);
-    });
+      document.getElementById('days-run').innerText = consecutiveDays;
+      document.getElementById('total-mileage').innerText = totalMileage.toFixed(2);
+    }
+
+    function getActivities(res) {
+      const activities_link = `https://www.strava.com/api/v3/athlete/activities?access_token=${res.access_token}`;
+      fetch(activities_link)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Fetched activities:", data);
+          updateCalendarWithActivities(data);
+        })
+        .catch((error) => console.error("Failed to load activities:", error));
+    }
+
+    function reAuthorize() {
+      fetch(auth_link, {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          client_id: '150057',
+          client_secret: '9d853b865834442f4715ba44f4c51eeeb381b383',
+          refresh_token: 'ea1f5de029eafe8bd253f0e1f30906f059078461',
+          grant_type: 'refresh_token'
+        })
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log("New Access Token:", res.access_token);
+          getActivities(res);
+        })
+        .catch((error) => console.error("Failed to refresh token:", error));
+    }
+
+    document.addEventListener('DOMContentLoaded', reAuthorize);
   </script>
 
-  <!-- Note: The access token has been updated. For long-term use, implement a secure refresh token mechanism. -->
+  <!-- Note: For long-term use, ensure secure server-side handling of sensitive data. -->
+
+</body>
+
+</html>
 
 </body>
 

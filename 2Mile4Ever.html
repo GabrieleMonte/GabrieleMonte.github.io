@@ -215,18 +215,14 @@
             });
           }
         });
-
-        let consecutiveDays = 0;
-        let currentDate = new Date('2024-12-07');
-        while (currentDate <= yesterday) {
-          const dateStr = currentDate.toISOString().split('T')[0];
-          if (runDatesSet.has(dateStr)) {
-            consecutiveDays++;
-            currentDate.setDate(currentDate.getDate() + 1);
-          } else break;
-        }
-
-        document.getElementById('days-run').innerText = consecutiveDays;
+        // Calculate days since start (Dec 7, 2024) independently
+        const startDate = new Date('2024-12-07');
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        const timeDiff = yesterday - startDate;
+        const totalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+        document.getElementById('days-run').innerText = totalDays;
         document.getElementById('total-mileage').innerText = totalMileage.toFixed(2);
       }
 

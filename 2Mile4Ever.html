@@ -116,7 +116,7 @@
         <div id="calendar"></div>
         <div class="stats-container">
           <div class="stats-item">Total Days Run: <span id="days-run">0</span></div>
-          <div class="stats-item">Total Mileage: <span id="total-mileage">0</span> km</div>
+          <div class="stats-item">Total Mileage: <span id="total-mileage">0</span> miles</div>
         </div>
       </div>
     </section>
@@ -161,17 +161,32 @@
             const distanceKm = activity.distance / 1000;
             const movingTimeMinutes = (activity.moving_time / 60).toFixed(2);
             const avgHeartRate = activity.hasOwnProperty('average_heartrate') ? `${activity.average_heartrate} bpm` : 'N/A';
+            const activityDate = new Date(activity.start_date).toISOString().split('T')[0];
 
-            if (activity.type === 'Run' && distanceKm >= 3.2 && distanceKm <= 3.8 && new Date(activity.start_date) >= new Date('2023-12-07')) {
-              totalMileage += distanceKm / 1.60934;
-              totalDays++;
+            if (activity.type === 'Run' && distanceKm >= 3.2 && distanceKm <= 3.7 && new Date(activity.start_date) >= new Date('2023-12-07')) {
+              totalMileage += distanceKm;
+              runDatesSet.add(activityDate);
               calendar.addEvent({
                 title: `${distanceKm.toFixed(2)} km<br>${movingTimeMinutes} min<br>Avg HR: ${avgHeartRate}`,
                 start: activity.start_date,
-                allDay: false // Ensure minimal highlighting and proper text wrapping
+                allDay: false
               });
             }
           });
+
+          // Calculate consecutive days run since Dec 7, 2024
+          let consecutiveDays = 0;
+          let currentDate = new Date('2023-12-07');
+          const today = new Date();
+          while (currentDate <= today) {
+            const dateStr = currentDate.toISOString().split('T')[0];
+            if (runDatesSet.has(dateStr)) {
+              consecutiveDays++;
+              currentDate.setDate(currentDate.getDate() + 1);
+            } else {
+              break; // Stop counting if a day is missed
+            }
+          }
 
           document.getElementById('days-run').innerText = totalDays;
           document.getElementById('total-mileage').innerText = totalMileage.toFixed(2);

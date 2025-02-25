@@ -156,7 +156,7 @@
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: window.innerWidth < 768 ? 'timeGridWeek' : 'dayGridMonth',
         height: 'auto',
-        timeZone: 'local', // Force local timezone
+        timeZone: 'America/Chicago', // Enforce US Central Time,
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
@@ -227,7 +227,7 @@
           const activityDate = activityDateObj.toISOString().split('T')[0];
           const movingTimeMinutes = (activity.moving_time / 60).toFixed(2);
           const avgHeartRate = activity.average_heartrate ? `${activity.average_heartrate} bpm` : 'N/A';
-          const startTime = activityDateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const startTime = activityDateObj.toLocaleTimeString('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit' });
           const adjustedEnd = new Date(activityDateObj.getTime() + 5 * 60 * 1000).toISOString(); // Adds 5 mins
 
           if (activity.type === 'Run' && distanceKm >= 3 && distanceKm <= 4 && activityDateObj >= new Date('2023-12-07')) {

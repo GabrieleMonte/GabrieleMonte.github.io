@@ -151,8 +151,15 @@
     document.addEventListener('DOMContentLoaded', async function() {
       const calendarEl = document.getElementById('calendar');
       const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
+        initialView: window.innerWidth < 768 ? 'timeGridWeek' : 'dayGridMonth',
         height: 'auto',
+        timeZone: 'local', // Force local timezone
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: window.innerWidth < 768 ? 'timeGridDay,timeGridWeek' : 'dayGridMonth,timeGridWeek'
+        },
+        displayEventEnd: false, // Prevent multi-day rendering
         events: [],
         eventContent: function (arg) {
           return { html: `<div style="white-space: normal; word-wrap: break-word;">${arg.event.title}</div>` };
@@ -218,14 +225,14 @@
           const movingTimeMinutes = (activity.moving_time / 60).toFixed(2);
           const avgHeartRate = activity.average_heartrate ? `${activity.average_heartrate} bpm` : 'N/A';
           const startTime = activityDateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const adjustedEnd = new Date(activityDateObj.getTime() + 5 * 60 * 1000).toISOString(); // Adds 5 mins
 
-          if (activity.type === 'Run' && distanceKm >= 3.2 && distanceKm <= 3.6 && activityDateObj >= new Date('2024-12-07')) {
-            totalMileage += distanceKm / 1.60934;
-            if (activityDateObj <= yesterday) runDatesSet.add(activityDate);
+          if (activity.type === 'Run' && distanceKm >= 3 && distanceKm <= 4 && activityDateObj >= new Date('2023-12-07')) {
+            totalMileage += distanceKm;
             calendar.addEvent({
               title: `${distanceKm.toFixed(2)} km • ${startTime} • ${movingTimeMinutes} min • Avg HR: ${avgHeartRate}`,
-              start: activity.start_date,
-              end: activity.start_date,  // Forces display only on the start day
+              start: activityDateObj.toISOString(),
+              end: adjustedEnd,
               allDay: false
             });
           }

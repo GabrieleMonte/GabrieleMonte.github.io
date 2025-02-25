@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
-<!-- Custom CSS -->
   <style>
     #calendar {
       width: 90vw;
@@ -48,15 +47,30 @@
       font-weight: bold;
       color: #38bd6d;
     }
-
-    /* Force no background highlighting completely */
+     /* Force no background highlighting completely */
     .fc-event-main, .fc-event {
       background-color: transparent !important;
       border: none !important;
       color: #212529 !important;
       white-space: normal !important;
       position: relative;
-      padding-left: 15px;
+      padding-left: 1.5vw;
+    }
+
+    /* Mobile responsiveness for calendar */
+    @media (max-width: 768px) {
+      #calendar {
+        width: 100vw;
+        padding: 1vw;
+      }
+
+      .fc .fc-toolbar-title {
+        font-size: 1.2rem;
+      }
+
+      .fc-daygrid-event .fc-event-title {
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>

@@ -230,7 +230,7 @@
           const startTime = activityDateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
           const adjustedEnd = new Date(activityDateObj.getTime() + .1 * 60 * 1000).toISOString(); // Adds .1 mins
 
-          if (activity.type === 'Run' && distanceKm >= 3 && distanceKm <= 4 && activityDateObj >= new Date('2023-12-07')) {
+          if (activity.type === 'Run' && distanceKm >= 3.2 && distanceKm <= 3.6 && activityDateObj >= new Date('2024-12-07')) {
             totalMileage += distanceKm /1.60934;
             calendar.addEvent({
               title: `${distanceKm.toFixed(2)} km • ${startTime} • ${movingTimeMinutes} min • Avg HR: ${avgHeartRate}`,

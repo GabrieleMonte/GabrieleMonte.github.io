@@ -15,7 +15,7 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
 <!-- Custom CSS -->
-  <style>
+<style>
     #calendar {
       max-width: 900px;
       margin: 40px auto;
@@ -46,11 +46,26 @@
     }
 
     /* Force no background highlighting completely */
-    .fc-event-main, .fc-event { 
+    .fc-event-main, .fc-event {
       background-color: transparent !important;
       border: none !important;
       color: #212529 !important;
       white-space: normal !important;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    /* Blue bullet point for each run */
+    .fc-event-main::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background-color: #007bff;
+      border-radius: 50%;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
   </style>
 </head>

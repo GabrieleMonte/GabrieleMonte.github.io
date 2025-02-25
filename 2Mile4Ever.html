@@ -211,6 +211,7 @@
             calendar.addEvent({
               title: `${distanceKm.toFixed(2)} km • ${startTime} • ${movingTimeMinutes} min • Avg HR: ${avgHeartRate}`,
               start: activity.start_date,
+              end: activity.start_date,  // Forces display only on the start day
               allDay: false
             });
           }

@@ -231,7 +231,7 @@
           const adjustedEnd = new Date(activityDateObj.getTime() + 5 * 60 * 1000).toISOString(); // Adds 5 mins
 
           if (activity.type === 'Run' && distanceKm >= 3 && distanceKm <= 4 && activityDateObj >= new Date('2023-12-07')) {
-            totalMileage += distanceKm;
+            totalMileage += distanceKm /1.60934;
             calendar.addEvent({
               title: `${distanceKm.toFixed(2)} km • ${startTime} • ${movingTimeMinutes} min • Avg HR: ${avgHeartRate}`,
               start: activityDateObj.toISOString(),

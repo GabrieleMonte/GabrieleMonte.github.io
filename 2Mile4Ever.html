@@ -40,20 +40,41 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-    <a class="navbar-brand js-scroll-trigger" href="/">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
       <span class="d-block d-lg-none">Gabriele Montefalcone</span>
       <span class="d-none d-lg-block">
         <img class="img-profile" src="img/gab6.jpg" alt="">
       </span>
     </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="/">Home</a>
+          <a class="nav-link js-scroll-trigger" href="http://gabrielemontefalcone.com/#about">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="/2MileChallenge">2-Mile Challenge</a>
+          <a class="nav-link js-scroll-trigger" href="http://gabrielemontefalcone.com/#cv">Curriculum Vitae</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link js-scroll-trigger" href="http://gabrielemontefalcone.com/#research">Research</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link js-scroll-trigger" href="http://gabrielemontefalcone.com/#education">Education</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link js-scroll-trigger" href="http://gabrielemontefalcone.com/#interests">Interests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link js-scroll-trigger" href="http://gabrielemontefalcone.com/#awards">Awards &amp; Skills</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link js-scroll-trigger" href="ArxivReadings">My ArXiv Readings</a>
+        </li>
+      <li class="nav-item">
+          <a class="nav-link js-scroll-trigger" href="http://physicsconcerto.com">Physics Concerto </a>
+        </li> 
       </ul>
     </div>
   </nav>
@@ -62,7 +83,7 @@
     <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="challenge">
       <div class="w-100">
         <h2 class="mb-5">2-Mile Daily Running Challenge</h2>
-        <p class="lead mb-4">A personal challenge: running 2 miles every day starting December 7. This page shows progress including daily runs, total mileage, and a running streak calendar.</p>
+        <p class="lead mb-4"> A personal challenge of running at least two miles, every day, without exception.  The hope is to keep going for as long as my legs will allow. This is my small commitment to discipline and a sustainable, healthy lifestyle. On this page, you can track my daily runs, total mileage, and additional stats such as run time and average heart rate.</p>
 
         <div id="calendar"></div>
         <div class="stats-container">
@@ -77,7 +98,7 @@
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Updated Strava API Integration with New Tokens -->
+  <!-- Updated Strava API Integration with Minimal Highlighting -->
   <script>
     document.addEventListener('DOMContentLoaded', async function() {
       const calendarEl = document.getElementById('calendar');
@@ -107,12 +128,16 @@
 
           activities.forEach(activity => {
             const distanceKm = activity.distance / 1000;
+            const movingTimeMinutes = (activity.moving_time / 60).toFixed(2);
+            const avgHeartRate = activity.hasOwnProperty('average_heartrate') ? `${activity.average_heartrate} bpm` : 'N/A';
+
             if (activity.type === 'Run' && distanceKm >= 3 && distanceKm <= 4 && new Date(activity.start_date) >= new Date('2023-12-07')) {
               totalMileage += distanceKm;
               totalDays++;
               calendar.addEvent({
-                title: `${distanceKm.toFixed(2)} km`,
-                start: activity.start_date
+                title: `${distanceKm.toFixed(2)} km | ${movingTimeMinutes} min | Avg HR: ${avgHeartRate}`,
+                start: activity.start_date,
+                allDay: false // Disable full-day highlighting for minimal appearance
               });
             }
           });
@@ -129,7 +154,6 @@
     });
   </script>
 
-  <!-- Note: The access token has been updated. For long-term use, implement a secure refresh token mechanism. -->
 
 </body>
 

@@ -152,7 +152,7 @@
         const startTime = new Date(activity.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const activityDate = new Date(activity.start_date).toISOString().split('T')[0];
 
-        if (activity.type === 'Run' && distanceKm >= 3 && distanceKm <= 4 && new Date(activity.start_date) >= new Date('2023-12-07')) {
+        if (activity.type === 'Run' && distanceKm >= 3.2 && distanceKm <= 3.55 && new Date(activity.start_date) >= new Date('2023-12-07')) {
           totalMileage += distanceKm;
           runDatesSet.add(activityDate);
           calendar.addEvent({
@@ -166,7 +166,7 @@
       let consecutiveDays = 0;
       let currentDate = new Date('2023-12-07');
       const today = new Date();
-      while (currentDate <= today) {
+      while (currentDate < today) {
         const dateStr = currentDate.toISOString().split('T')[0];
         if (runDatesSet.has(dateStr)) {
           consecutiveDays++;

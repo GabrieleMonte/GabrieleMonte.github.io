@@ -217,13 +217,13 @@
           }
         });
         // Calculate days since start (Dec 7, 2024) independently
-        const startDate = new Date('2024-12-07');
-        const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-        const timeDiff = yesterday - startDate;
-        const totalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
-        document.getElementById('days-run').innerText = totalDays;
+        const startDateC = new Date('2024-12-07');
+        const todayC = new Date();
+        const yesterdayC = new Date(today);
+        yesterdayC.setDate(todayC.getDate() - 1);
+        const timeDiffC = yesterdayC - startDateC;
+        const totalDaysC = Math.floor(timeDiffC / (1000 * 60 * 60 * 24)) + 1;
+        document.getElementById('days-run').innerText = totalDaysC;
         document.getElementById('total-mileage').innerText = totalMileage.toFixed(2);
       }
 

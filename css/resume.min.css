@@ -57,7 +57,7 @@
     .media-item a {
       color: #38bd6d;;
       text-decoration: none;
-      font-size: calc(.5vw + 0.25rem);
+      font-size: calc(.8vw + 0.3rem);
     }
 
     .media-item a:hover {
@@ -65,7 +65,7 @@
     }
 
     .media-item p {
-      font-size: calc(0.4vw + 0.2rem);
+      font-size: calc(0.6vw + 0.3rem);
     }
 
     .spotify-embed iframe {
@@ -93,6 +93,6 @@
 
       .media-item a,
       .media-item p {
-        font-size: calc(1vw + 0.4rem);
+        font-size: calc(1.4vw + 0.5rem);
       }
     }

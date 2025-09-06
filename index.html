@@ -290,6 +290,190 @@
             Italian U20 & U18 400hs Champion (2014-2016) </li>
         </ul>
       </div>
+<!-- Add this section after the "Past Athletic Life" section in your index.html -->
+
+<hr class="m-0">
+<section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="2mile">
+  <div class="w-100">
+    <h2 class="mb-5">2-Mile Daily Running Challenge</h2>
+    <p class="lead mb-5">
+      A personal challenge of running at least two miles, every day, without exception. I started on December 7th 2024, and the hope is to keep going for as long as my legs will allow. 
+      This is my small commitment to discipline and a sustainable, healthy lifestyle.
+      On this page, you can track my daily runs, total mileage, and additional stats such as run time and average heart rate.
+    </p>
+    
+    <!-- Calendar Container -->
+    <div id="calendar" style="background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 6px 20px rgba(0,0,0,.08); margin-bottom: 2rem;"></div>
+    
+    <!-- Stats Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 2rem;">
+      <div style="background:#fff; border-radius: 14px; padding: 16px 18px; box-shadow: 0 6px 20px rgba(0,0,0,.08); text-align: center;">
+        <div class="subheading mb-2">Total Days Run</div>
+        <div style="font-size: 2rem; font-weight: 800; color: #38bd6d;" id="days-run">—</div>
+      </div>
+      <div style="background:#fff; border-radius: 14px; padding: 16px 18px; box-shadow: 0 6px 20px rgba(0,0,0,.08); text-align: center;">
+        <div class="subheading mb-2">Total Mileage</div>
+        <div style="font-size: 2rem; font-weight: 800; color: #38bd6d;" id="total-mileage">—</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Add these scripts at the bottom of your HTML, before the closing </body> tag -->
+
+<!-- FullCalendar CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<script>
+// 2-Mile Challenge Calendar Script
+document.addEventListener('DOMContentLoaded', function () {
+  // Only initialize if we're on a page with the calendar element
+  const calEl = document.getElementById('calendar');
+  if (!calEl) return;
+
+  // CONFIG - adjust these paths to match your setup
+  const SNAPSHOT_DIR = '/data/activities';
+  const INDEX_PATH = '/data/activities/index.json';
+  const RECENT_LIST = '/data/activities/recent-30d.json';
+  
+  // Simple cache implementation
+  const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+  function cacheKey(ym){ return `runs_month_${ym}`; }
+  function cachePut(ym, data){
+    try {
+      localStorage.setItem(cacheKey(ym), JSON.stringify({ t: Date.now(), data }));
+    } catch(e) {}
+  }
+  function cacheGet(ym){
+    try {
+      const raw = localStorage.getItem(cacheKey(ym));
+      if(!raw) return null;
+      const obj = JSON.parse(raw);
+      if(Date.now() - obj.t > CACHE_TTL_MS) return null;
+      return obj.data;
+    } catch(e){ return null; }
+  }
+
+  function monthsInRange(start, end){
+    const out = [];
+    const d = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), 1));
+    const endUTC = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), 1));
+    while (d <= endUTC){
+      const y = d.getUTCFullYear();
+      const m = String(d.getUTCMonth()+1).padStart(2,'0');
+      out.push(`${y}-${m}`);
+      d.setUTCMonth(d.getUTCMonth()+1);
+    }
+    return out;
+  }
+
+  async function loadMonth(ym){
+    const cached = cacheGet(ym);
+    if (cached) return cached;
+    const url = `${SNAPSHOT_DIR}/${ym}.json`;
+    try {
+      const res = await fetch(url, { cache: 'no-cache' });
+      if (!res.ok) return [];
+      const data = await res.json();
+      cachePut(ym, data);
+      return data;
+    } catch(e) {
+      return [];
+    }
+  }
+
+  function formatDurationHHMMSS(seconds){
+    const s = Math.max(0, Math.round(seconds || 0));
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    const pad = n => String(n).padStart(2, '0');
+    return `${pad(h)}:${pad(m)}:${pad(sec)}`;
+  }
+
+  function toEvent(a){
+    const endISO = new Date(new Date(a.start_iso).getTime() + 6*60*1000).toISOString();
+    const secs = a.moving_time_s ?? (a.moving_time_min ? a.moving_time_min * 60 : 0);
+    const dur = formatDurationHHMMSS(secs);
+    
+    const bits = [
+      `${a.distance_km.toFixed(2)} km`,
+      dur,
+      (a.avg_hr ? `Avg HR: ${Math.round(a.avg_hr)} bpm` : null)
+    ].filter(Boolean);
+
+    return {
+      id: String(a.id || `${a.start_iso}-${a.distance_km}`),
+      title: bits.join(' • '),
+      start: a.start_iso,
+      end: endISO,
+      allDay: false
+    };
+  }
+
+  // Initialize calendar
+  const calendar = new FullCalendar.Calendar(calEl, {
+    initialView: window.innerWidth < 768 ? 'dayGridWeek' : 'dayGridMonth',
+    timeZone: 'local',
+    height: 'auto',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: window.innerWidth < 768 ? 'dayGridWeek' : 'dayGridMonth,dayGridWeek'
+    },
+    eventSources: [{
+      events: async (info, success, failure) => {
+        try {
+          const months = monthsInRange(info.start, info.end);
+          const monthArrays = await Promise.all(months.map(loadMonth));
+          const monthEvents = monthArrays.flat().map(toEvent);
+
+          let recent = [];
+          try {
+            const r = await fetch(RECENT_LIST, { cache:'no-cache' });
+            if (r.ok) recent = (await r.json()).map(toEvent);
+          } catch (_) {}
+
+          const seen = new Set();
+          const unique = [];
+          for (const e of [...monthEvents, ...recent]) {
+            const key = e.id;
+            if (!seen.has(key)) { 
+              seen.add(key); 
+              unique.push(e); 
+            }
+          }
+
+          success(unique);
+        } catch (e) { 
+          console.error('Calendar error:', e);
+          failure(e); 
+        }
+      }
+    }]
+  });
+  
+  calendar.render();
+
+  // Load stats
+  (async () => {
+    try {
+      const idx = await fetch(INDEX_PATH, { cache: 'no-cache' }).then(r => r.json());
+      const totalDays = idx.months.reduce((s, m) => s + Number(m.days || 0), 0);
+      const totalMiles = idx.months.reduce((s, m) => s + Number(m.miles || 0), 0);
+      
+      const daysEl = document.getElementById('days-run');
+      const milesEl = document.getElementById('total-mileage');
+      
+      if (daysEl) daysEl.textContent = totalDays;
+      if (milesEl) milesEl.textContent = totalMiles.toFixed(2) + ' miles';
+    } catch(e) {
+      console.error('Stats error:', e);
+    }
+  })();
+});
+</script>
   </div>
 
   <!-- Bootstrap core JavaScript -->

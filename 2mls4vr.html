@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2-Mile Daily Challenge | Gabriele Montefalcone</title>
+
+  <!-- FullCalendar -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+  <!-- Optional: Bootstrap for your site nav/style (remove if not needed) -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="css/resume.min.css" rel="stylesheet" />
+
+  <style>
+    body { background:#f8f9fa; }
+    #calendar {
+      width: min(1200px, 92vw);
+      margin: 5vh auto 2vh auto;
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.08);
+    }
+    .stats {
+      width: min(1200px, 92vw);
+      margin: 0 auto 6vh auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .stat {
+      background:#fff;
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.08);
+      font-weight:600;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .stat span { font-weight:800; margin-left:.4rem; }
+    .fc .fc-toolbar-title { font-weight:700; }
+    .fc-event, .fc-event-main {
+      background: transparent !important;
+      border: none !important;
+      color: #212529 !important;
+      white-space: normal !important;
+    }
+    @media (max-width: 768px){
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Optional: your existing site nav -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <!-- ... keep your existing nav content if you like ... -->
+    <a class="navbar-brand" href="/">Gabriele Montefalcone</a>
+  </nav>
+
+  <main style="padding-top:72px">
+    <section class="container-fluid p-0">
+      <div class="w-100" style="text-align:center;margin-top:1rem;">
+        <h2>2-Mile Daily Running Challenge</h2>
+        <p class="lead" style="max-width:920px;margin:0 auto 1rem auto;">
+          I started on <strong>December 7, 2024</strong>. This page loads only the months in view (plus a tiny “recent” feed)
+          for speed—stats are pre-summed, so no full-history scans on each visit.
+        </p>
+      </div>
+
+      <div id="calendar"></div>
+
+      <div class="stats">
+        <div class="stat">Total Days Run: <span id="days-run">—</span></div>
+        <div class="stat">Total Mileage: <span id="total-mileage">—</span> miles</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Optional: Bootstrap JS (remove if not needed) -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+  // ========= CONFIG (adjust paths for your repo) =========
+  const SNAPSHOT_DIR = '/2mls4vr/activities';        // where monthly JSON lives (e.g., /data/activities/2025-09.json)
+  const INDEX_PATH   = '/2mls4vr/activities/index.json'; // precomputed monthly totals
+  const RECENT_LIST  = '/2mls4vr/activities/recent-30d.json';
+  const RECENT_SUM   = '/2mls4vr/activities/recent-30d-summary.json';
+  const START_DATE_ISO = '2024-12-07';
+
+  // ========= LIGHTWEIGHT CACHING =========
+  // Cache monthly snapshots in localStorage with a simple freshness window (1 day).
+  const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+  function cacheKey(ym){ return `runs_month_${ym}`; }
+  function cachePut(ym, data){
+    try {
+      localStorage.setItem(cacheKey(ym), JSON.stringify({ t: Date.now(), data }));
+    } catch(e) {}
+  }
+  function cacheGet(ym){
+    try {
+      const raw = localStorage.getItem(cacheKey(ym));
+      if(!raw) return null;
+      const obj = JSON.parse(raw);
+      if(Date.now() - obj.t > CACHE_TTL_MS) return null;
+      return obj.data;
+    } catch(e){ return null; }
+  }
+
+  // ========= HELPERS =========
+  function monthsInRange(start, end){
+    // start/end are Date objects from FullCalendar (local time)
+    const out = [];
+    const d = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), 1));
+    const endUTC = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), 1));
+    while (d <= endUTC){
+      const y = d.getUTCFullYear();
+      const m = String(d.getUTCMonth()+1).padStart(2,'0');
+      out.push(`${y}-${m}`);
+      d.setUTCMonth(d.getUTCMonth()+1);
+    }
+    return out;
+  }
+
+  // Expect each monthly file to be an array of objects like:
+  // { date: "2025-09-06", distance_km: 3.22, moving_time_min: 17.8, avg_hr: 142, start_iso: "2025-09-06T12:34:00Z", time_hhmm: "12:34" }
+  async function loadMonth(ym){
+    const cached = cacheGet(ym);
+    if (cached) return cached;
+    const url = `${SNAPSHOT_DIR}/${ym}.json`;
+    const res = await fetch(url, { cache: 'no-cache' });
+    if (!res.ok) return [];
+    const data = await res.json();
+    cachePut(ym, data);
+    return data;
+  }
+
+  function toEvent(a){
+    // Short, DOM-cheap title
+    const endISO = new Date(new Date(a.start_iso).getTime() + 6*60*1000).toISOString();
+    const title = `${a.distance_km.toFixed(2)} km • ${a.time_hhmm || ''}`.trim();
+    return { title, start: a.start_iso, end: endISO, allDay:false };
+    // If you need to filter non-qualifying runs (e.g., >= 3.2 km), do it in the server snapshot builder for consistency.
+  }
+
+  // ========= INIT =========
+  document.addEventListener('DOMContentLoaded', function () {
+    const calEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calEl, {
+      initialView: window.innerWidth < 768 ? 'dayGridWeek' : 'dayGridMonth',
+      timeZone: 'local',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: window.innerWidth < 768 ? 'timeGridDay,timeGridWeek' : 'dayGridMonth,timeGridWeek'
+      },
+      eventSources: [{
+        events: async (info, success, failure) => {
+          try {
+            // Load only intersecting months
+            const months = monthsInRange(info.start, info.end);
+            const monthArrays = await Promise.all(months.map(loadMonth));
+            const monthEvents = monthArrays.flat().map(toEvent);
+
+            // Blend in tiny recent feed (safe, small payload)
+            let recent = [];
+            try {
+              const r = await fetch(RECENT_LIST, { cache:'no-cache' });
+              if (r.ok) recent = (await r.json()).map(toEvent);
+            } catch(_) {}
+
+            success([...monthEvents, ...recent]);
+          } catch (e) {
+            failure(e);
+          }
+        }
+      }]
+    });
+    calendar.render();
+
+    // Fast totals from precomputed index + recent summary (O(1))
+    (async () => {
+      try {
+        const idxRes = await fetch(INDEX_PATH, { cache:'no-cache' });
+        if (!idxRes.ok) throw new Error('index missing');
+        const idx = await idxRes.json();
+
+        let recent = { days:0, miles:0 };
+        try {
+          const r = await fetch(RECENT_SUM, { cache:'no-cache' });
+          if (r.ok) recent = await r.json();
+        } catch(_) {}
+
+        const agg = idx.months.reduce((acc, m) => {
+          acc.days += Number(m.days||0);
+          acc.miles += Number(m.miles||0);
+          return acc;
+        }, {days:0, miles:0});
+
+        const totalDays  = agg.days + (recent.days||0);
+        const totalMiles = (agg.miles + (recent.miles||0)).toFixed(2);
+
+        document.getElementById('days-run').textContent = totalDays;
+        document.getElementById('total-mileage').textContent = totalMiles;
+      } catch (e) {
+        // Fallback: compute days since start up to yesterday if index is missing
+        const start = new Date(START_DATE_ISO);
+        const y = new Date();
+        y.setDate(y.getDate()-1);
+        const days = Math.max(0, Math.floor((y - start)/(1000*60*60*24)) + 1);
+        document.getElementById('days-run').textContent = days;
+        document.getElementById('total-mileage').textContent = '—';
+      }
+    })();
+  });
+  </script>
+</body>
+</html>

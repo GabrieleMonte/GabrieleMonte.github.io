@@ -207,36 +207,33 @@ details[open] > summary .arrow::after {
   margin-bottom: 3vh;
   border-bottom: 0.2vh solid #e0e0e0;
   padding-bottom: 2vh;
-  font-size: calc(0.8vw + 0.5rem);
 }
 
-/* text column (left on desktop) */
+/* text on the left */
 .media-reel__text {
-  flex: 1 1 420px; /* grows but keeps a comfortable minimum */
+  flex: 1 1 420px;
 }
 
-/* vertical video (right on desktop) */
-.media-reel__video {
-  flex: 0 0 auto;
-  width: clamp(240px, 22vw, 360px);   /* ~mobile → desktop */
-  aspect-ratio: 9 / 16;               /* vertical reel */
-  height: auto;                       /* preserve aspect from width */
-  object-fit: cover;
+/* video on the right (vertical reel ratio) */
+.media-reel__video iframe {
+  width: clamp(240px, 22vw, 360px);
+  aspect-ratio: 9 / 16;
+  height: auto;
   border-radius: 1rem;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
-/* Mobile: stack, video below text and full-width up to 360px */
+/* stack on mobile */
 @media (max-width: 768px) {
   .media-reel {
     flex-direction: column;
     align-items: flex-start;
   }
-  .media-reel__video {
+
+  .media-reel__video iframe {
     width: 100%;
-    max-width: 360px;  /* keeps vertical reel sensible on phones */
+    max-width: 360px;
     margin-top: 1rem;
   }
 }
-
 

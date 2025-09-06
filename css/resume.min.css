@@ -106,11 +106,6 @@ summary::-webkit-details-marker {
 }
 
 /* Arrow style (your ► symbol) */
-.arrow {
-  display: inline-block;
-  transition: transform 0.2s ease;
-  margin-right: 0.3rem;
-}
 .arrow::after {
   content: "\25BA"; /* ► right-pointing */
   display: inline-block;

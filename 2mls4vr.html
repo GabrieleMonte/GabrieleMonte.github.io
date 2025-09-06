@@ -138,12 +138,16 @@
   }
 
   function toEvent(a){
-    // Short, DOM-cheap title
-    const endISO = new Date(new Date(a.start_iso).getTime() + 6*60*1000).toISOString();
-    const title = `${a.distance_km.toFixed(2)} km • ${a.time_hhmm || ''}`.trim();
-    return { title, start: a.start_iso, end: endISO, allDay:false };
-    // If you need to filter non-qualifying runs (e.g., >= 3.2 km), do it in the server snapshot builder for consistency.
-  }
+   const endISO = new Date(new Date(a.start_iso).getTime() + 6*60*1000).toISOString();
+  const title = `${a.distance_km.toFixed(2)} km • ${a.time_hhmm || ''}`.trim();
+  return {
+    id: String(a.id),                    // <-- carry Strava id through
+    title,
+    start: a.start_iso,
+    end: endISO,
+    allDay: false
+  };
+}
 
   // ========= INIT =========
   document.addEventListener('DOMContentLoaded', function () {
@@ -157,63 +161,57 @@
         right: window.innerWidth < 768 ? 'timeGridDay,timeGridWeek' : 'dayGridMonth,timeGridWeek'
       },
       eventSources: [{
-        events: async (info, success, failure) => {
-          try {
-            // Load only intersecting months
-            const months = monthsInRange(info.start, info.end);
-            const monthArrays = await Promise.all(months.map(loadMonth));
-            const monthEvents = monthArrays.flat().map(toEvent);
+  events: async (info, success, failure) => {
+    try {
+      const months = monthsInRange(info.start, info.end);
+      const monthArrays = await Promise.all(months.map(loadMonth));
+      const monthEvents = monthArrays.flat().map(toEvent);
 
-            // Blend in tiny recent feed (safe, small payload)
-            let recent = [];
-            try {
-              const r = await fetch(RECENT_LIST, { cache:'no-cache' });
-              if (r.ok) recent = (await r.json()).map(toEvent);
-            } catch(_) {}
+      // still fetch recent (optional), but we’ll de-dupe below
+      let recent = [];
+      try {
+        const r = await fetch(RECENT_LIST, { cache:'no-cache' });
+        if (r.ok) recent = (await r.json()).map(toEvent);
+      } catch (_) {}
 
-            success([...monthEvents, ...recent]);
-          } catch (e) {
-            failure(e);
-          }
-        }
+      // ---- DE-DUPE by id ----
+      const seen = new Set();
+      const unique = [];
+      for (const e of [...monthEvents, ...recent]) {
+        const key = e.id || `${e.start}-${e.title}`;  // fallback if id missing
+        if (!seen.has(key)) { seen.add(key); unique.push(e); }
+      }
+
+      success(unique);
+    } catch (e) { failure(e); }
+  }
       }]
     });
     calendar.render();
 
     // Fast totals from precomputed index + recent summary (O(1))
     (async () => {
-      try {
-        const idxRes = await fetch(INDEX_PATH, { cache:'no-cache' });
-        if (!idxRes.ok) throw new Error('index missing');
-        const idx = await idxRes.json();
+  const idx = await fetch(INDEX_PATH, { cache:'no-cache' }).then(r=>r.json());
+  let recent = { days:0, miles:0, generated_at: null };
+  try {
+    const r = await fetch(RECENT_SUM, { cache:'no-cache' });
+    if (r.ok) recent = await r.json();
+  } catch (_) {}
 
-        let recent = { days:0, miles:0 };
-        try {
-          const r = await fetch(RECENT_SUM, { cache:'no-cache' });
-          if (r.ok) recent = await r.json();
-        } catch(_) {}
+  let totalDays  = idx.months.reduce((s,m)=> s + (Number(m.days)||0), 0);
+  let totalMiles = idx.months.reduce((s,m)=> s + (Number(m.miles)||0), 0);
 
-        const agg = idx.months.reduce((acc, m) => {
-          acc.days += Number(m.days||0);
-          acc.miles += Number(m.miles||0);
-          return acc;
-        }, {days:0, miles:0});
+  // Only add “recent” if it’s newer than the index (i.e., index hasn’t caught up yet)
+  const idxTS    = idx.last_update ? new Date(idx.last_update).getTime() : 0;
+  const recentTS = recent.generated_at ? new Date(recent.generated_at).getTime() : 0;
+  if (recentTS > idxTS) {
+    totalDays  += recent.days || 0;
+    totalMiles += recent.miles || 0;
+  }
 
-        const totalDays  = agg.days + (recent.days||0);
-        const totalMiles = (agg.miles + (recent.miles||0)).toFixed(2);
-
-        document.getElementById('days-run').textContent = totalDays;
-        document.getElementById('total-mileage').textContent = totalMiles;
-      } catch (e) {
-        // Fallback: compute days since start up to yesterday if index is missing
-        const start = new Date(START_DATE_ISO);
-        const y = new Date();
-        y.setDate(y.getDate()-1);
-        const days = Math.max(0, Math.floor((y - start)/(1000*60*60*24)) + 1);
-        document.getElementById('days-run').textContent = days;
-        document.getElementById('total-mileage').textContent = '—';
-      }
-    })();
+  document.getElementById('days-run').textContent    = totalDays;
+  document.getElementById('total-mileage').textContent = totalMiles.toFixed(2);
+})();
   });
   </script>
 </body>

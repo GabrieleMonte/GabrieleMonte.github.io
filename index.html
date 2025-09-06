@@ -421,14 +421,18 @@ function toEvent(a){
   // ========= INIT =========
   document.addEventListener('DOMContentLoaded', function () {
     const calEl = document.getElementById('calendar');
+     // Initialize calendar
     const calendar = new FullCalendar.Calendar(calEl, {
-      initialView: window.innerWidth < 768 ? 'dayGridWeek' : 'dayGridMonth',
-      timeZone: 'local',
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: window.innerWidth < 768 ? 'dayGridWeek' : 'dayGridMonth,dayGridWeek'
-      },
+    initialView: window.innerWidth < 768 ? 'dayGridWeek' : 'dayGridMonth',
+    timeZone: 'local',
+    height: 'auto',
+    dayMaxEventRows: false, // Allow unlimited events per day
+    eventDisplay: 'block', // Display as block elements for better wrapping
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: window.innerWidth < 768 ? 'dayGridWeek' : 'dayGridMonth,dayGridWeek'
+    },
       eventSources: [{
   events: async (info, success, failure) => {
     try {

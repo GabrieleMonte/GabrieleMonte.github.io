@@ -96,3 +96,32 @@
         font-size: calc(1.4vw + 0.6rem);
       }
     }
+/* Make summary clickable and remove default browser marker */
+details summary {
+  cursor: pointer;
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none; /* hide Safari/Chrome default marker */
+}
+
+/* Arrow style (your ► symbol) */
+.arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  margin-right: 0.3rem;
+}
+
+/* Rotate arrow when <details> is open */
+details[open] > summary > .arrow {
+  transform: rotate(90deg);
+}
+
+/* Indentation for nested sections */
+.year > details.month {
+  margin-left: 1rem;
+}
+.month > ul {
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
+}

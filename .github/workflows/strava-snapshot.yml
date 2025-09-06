@@ -1,0 +1,42 @@
+name: Build Strava Monthly Snapshots
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "17 4 * * *"   # every day at 04:17 UTC (off-peak)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # allow committing JSON to the repo
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install deps
+        run: npm ci || npm i
+
+      - name: Run snapshot builder
+        env:
+          STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
+          STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
+        run: npm run fetch
+
+      - name: Commit & push snapshots
+        run: |
+          git config user.name "gh-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/activities
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update Strava snapshots [skip ci]"
+            git push
+          else
+            echo "No changes."
+          fi

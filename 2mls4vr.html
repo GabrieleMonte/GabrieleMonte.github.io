@@ -136,18 +136,44 @@
     cachePut(ym, data);
     return data;
   }
+function formatDurationHHMMSS(seconds){
+  const s = Math.max(0, Math.round(seconds || 0));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  const pad = n => String(n).padStart(2, '0');
+  return `${pad(h)}:${pad(m)}:${pad(sec)}`;
+}
+function formatPaceMMSSperKm(seconds, km){
+  if (!seconds || !km) return null;
+  const secPerKm = seconds / km;
+  const m = Math.floor(secPerKm / 60);
+  const s = Math.round(secPerKm % 60);
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}/km`;
+}
 
-  function toEvent(a){
-   const endISO = new Date(new Date(a.start_iso).getTime() + 6*60*1000).toISOString();
-  const title = `${a.distance_km.toFixed(2)} km • ${a.time_hhmm || ''}`.trim();
+function toEvent(a){
+  const endISO = new Date(new Date(a.start_iso).getTime() + 6*60*1000).toISOString(); // short block
+  const secs = a.moving_time_s ?? (a.moving_time_min ? a.moving_time_min * 60 : 0);
+  const dur  = formatDurationHHMMSS(secs);
+  const pace = formatPaceMMSSperKm(secs, a.distance_km); // optional, comment out if you don't want it
+
+  const bits = [
+    `${a.distance_km.toFixed(2)} km`,
+    dur,
+    (a.avg_hr ? `Avg HR: ${Math.round(a.avg_hr)} bpm` : null),
+    (pace ? `• ${pace}` : null)
+  ].filter(Boolean);
+
   return {
-    id: String(a.id),                    // <-- carry Strava id through
-    title,
+    id: String(a.id),
+    title: bits.join(' • '),
     start: a.start_iso,
     end: endISO,
     allDay: false
   };
 }
+
 
   // ========= INIT =========
   document.addEventListener('DOMContentLoaded', function () {

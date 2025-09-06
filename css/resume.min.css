@@ -111,10 +111,13 @@ summary::-webkit-details-marker {
   transition: transform 0.2s ease;
   margin-right: 0.3rem;
 }
-
-/* Rotate arrow when <details> is open */
-details[open] > summary > .arrow {
-  transform: rotate(90deg);
+.arrow::after {
+  content: "\25BA"; /* ► right-pointing */
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+details[open] > summary .arrow::after {
+  content: "\25BC"; /* ▼ down-pointing */
 }
 
 /* Indentation for nested sections */

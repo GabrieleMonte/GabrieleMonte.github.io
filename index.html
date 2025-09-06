@@ -463,42 +463,57 @@ function toEvent(a){
   document.addEventListener('DOMContentLoaded', function () {
     const calEl = document.getElementById('calendar');
      // Initialize calendar
-    const calendar = new FullCalendar.Calendar(calEl, {
-    initialView: window.innerWidth < 768 ? 'dayGridWeek' : 'dayGridMonth',
-    timeZone: 'local',
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: window.innerWidth < 768 ? 'dayGridWeek' : 'dayGridMonth,dayGridWeek'
-    },
-      eventSources: [{
-  events: async (info, success, failure) => {
-    try {
-      const months = monthsInRange(info.start, info.end);
-      const monthArrays = await Promise.all(months.map(loadMonth));
-      const monthEvents = monthArrays.flat().map(toEvent);
+const calendar = new FullCalendar.Calendar(calEl, {
+  initialView:
+    window.innerWidth < 768 ? 'dayGridDay' :
+    (window.innerWidth < 1100 ? 'dayGridWeek' : 'dayGridMonth'),
+  timeZone: 'local',
+  headerToolbar: {
+    left: 'prev,next today',
+    center: 'title',
+    right:
+      window.innerWidth < 768 ? 'dayGridDay' :
+      (window.innerWidth < 1100 ? 'dayGridWeek' : 'dayGridMonth,dayGridWeek')
+  },
 
-      // still fetch recent (optional), but we’ll de-dupe below
-      let recent = [];
+  // keep views in sync on resize (tiny)
+  windowResize() {
+    const w = window.innerWidth;
+    const view = w < 768 ? 'dayGridDay' : (w < 1100 ? 'dayGridWeek' : 'dayGridMonth');
+    const right = w < 768 ? 'dayGridDay' : (w < 1100 ? 'dayGridWeek' : 'dayGridMonth,dayGridWeek');
+    if (calendar.view.type !== view) calendar.changeView(view);
+    calendar.setOption('headerToolbar', { left: 'prev,next today', center: 'title', right });
+  },
+
+  eventSources: [{
+    events: async (info, success, failure) => {
       try {
-        const r = await fetch(RECENT_LIST, { cache:'no-cache' });
-        if (r.ok) recent = (await r.json()).map(toEvent);
-      } catch (_) {}
+        const months = monthsInRange(info.start, info.end);
+        const monthArrays = await Promise.all(months.map(loadMonth));
+        const monthEvents = monthArrays.flat().map(toEvent);
 
-      // ---- DE-DUPE by id ----
-      const seen = new Set();
-      const unique = [];
-      for (const e of [...monthEvents, ...recent]) {
-        const key = e.id || `${e.start}-${e.title}`;  // fallback if id missing
-        if (!seen.has(key)) { seen.add(key); unique.push(e); }
-      }
+        // still fetch recent (optional), but we’ll de-dupe below
+        let recent = [];
+        try {
+          const r = await fetch(RECENT_LIST, { cache:'no-cache' });
+          if (r.ok) recent = (await r.json()).map(toEvent);
+        } catch (_) {}
 
-      success(unique);
-    } catch (e) { failure(e); }
-  }
-      }]
-    });
-    calendar.render();
+        // ---- DE-DUPE by id ----
+        const seen = new Set();
+        const unique = [];
+        for (const e of [...monthEvents, ...recent]) {
+          const key = e.id || `${e.start}-${e.title}`;  // fallback if id missing
+          if (!seen.has(key)) { seen.add(key); unique.push(e); }
+        }
+
+        success(unique);
+      } catch (e) { failure(e); }
+    }
+  }]
+});
+calendar.render();
+
 
     // Fast totals from precomputed index + recent summary (O(1))
     (async () => {

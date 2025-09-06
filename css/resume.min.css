@@ -149,7 +149,7 @@ details[open] > summary .arrow::after {
   .media2-item img {
       width: calc(6vw + 40px);
       height: calc(3vw + 30px);
-      max-width: 160px;
+      max-width: 180px;
       max-height: 100px;
       object-fit: cover;
       border-radius: 1vw;

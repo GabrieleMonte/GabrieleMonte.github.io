@@ -217,25 +217,13 @@ function toEvent(a){
 
     // Fast totals from precomputed index + recent summary (O(1))
     (async () => {
-  const idx = await fetch(INDEX_PATH, { cache:'no-cache' }).then(r=>r.json());
-  let recent = { days:0, miles:0, generated_at: null };
-  try {
-    const r = await fetch(RECENT_SUM, { cache:'no-cache' });
-    if (r.ok) recent = await r.json();
-  } catch (_) {}
+  // index.json already applies the ≥ 3.22 km filter when computing miles & days
+  const idx = await fetch(INDEX_PATH, { cache: 'no-cache' }).then(r => r.json());
 
-  let totalDays  = idx.months.reduce((s,m)=> s + (Number(m.days)||0), 0);
-  let totalMiles = idx.months.reduce((s,m)=> s + (Number(m.miles)||0), 0);
+  const totalDays  = idx.months.reduce((s, m) => s + Number(m.days  || 0), 0);
+  const totalMiles = idx.months.reduce((s, m) => s + Number(m.miles || 0), 0);
 
-  // Only add “recent” if it’s newer than the index (i.e., index hasn’t caught up yet)
-  const idxTS    = idx.last_update ? new Date(idx.last_update).getTime() : 0;
-  const recentTS = recent.generated_at ? new Date(recent.generated_at).getTime() : 0;
-  if (recentTS > idxTS) {
-    totalDays  += recent.days || 0;
-    totalMiles += recent.miles || 0;
-  }
-
-  document.getElementById('days-run').textContent    = totalDays;
+  document.getElementById('days-run').textContent = totalDays;
   document.getElementById('total-mileage').textContent = totalMiles.toFixed(2);
 })();
   });

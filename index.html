@@ -117,6 +117,10 @@
         <div class="subheading mb-3"></div>
         <div> <p class="lead mb-5"> Here you can find a list of Arxiv papers I've found interesting, organized by month. It's a personal selection reflecting my interests, not an expert classification, as I'm just sharing what catches my eye in the world of academia. I tipically update this page weekly and at worst at the end of each month.</p>
       </div>
+          <!-- Collapse All button goes here -->
+    <div style="text-align: right; margin-bottom: 1rem;">
+      <button id="collapseAllBtn">Collapse All</button>
+    </div>
       <details class="year">
   <summary class="subheading mb-2"> <span class="arrow">&#x25BA;</span> 2025 </summary>
 
@@ -319,6 +323,14 @@ function togglePapers(id) {
     }
 }
 </script>
+<script>
+  document.getElementById("collapseAllBtn").addEventListener("click", function () {
+    document.querySelectorAll("details").forEach(d => {
+      d.removeAttribute("open");
+    });
+  });
+</script>
+
 </body>
 
 </html>

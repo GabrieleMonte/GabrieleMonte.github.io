@@ -1,0 +1,103 @@
+<section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="research">
+      <div class="w-100">
+        <h2 class="mb-5">Research &amp; Independent Work </h2>
+        
+        <div class="resume-item d-flex flex-column flex-md-row justify-content-between">
+          <div class="resume-content">
+            <h3 class="mb-0">Publications</h3>
+            <div class="subheading mb-3"></div>
+    <div> <p class="lead mb-5"> To see a full list of my papers and most recent publications, please visit my InspireHep page at this <a href="https://inspirehep.net/authors/2158431"  <i class="subsubheading mb-3"> link.</i> </a>
+    </p>
+      </div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
+          <div class="resume-content">
+            <h3 class="mb-0">Unpublished Physics Work</h3>
+            <div class="subheading mb-3"></div>
+        <div> <li>PHY 396T- Cosmology - Final Paper: <a href="/pdfs/DM_small-scale_challenges.pdf"  <i class="subsubheading mb-3"> Dark Matter on Galactic Scales </i> </a>
+            - May 2022</li> 
+          </div>            
+        <div> <li>Undergraduate Senior Thesis: <a href="/pdfs/Senior_Thesis_GabMontefalcone.pdf"  <i class="subsubheading mb-3">Exploring Galaxy Clusters with the Atacama Cosmology Telescope </i> </a>
+            - May 2020</li> 
+          </div>
+         <div> <li> PHY 509- Quantum Field Theory - Final Paper: <i class="fa-li fa fa-paperclip text-warning"></i> <a href="/pdfs/Schwinger_Effect_paper.pdf"  <i class="subsubheading mb-3">The Schwinger Effect</i> </a>
+            - January 2020</li> </div>
+          <div> <li> Spring Junior Paper:<a href="/pdfs/JP_Montefalcone_Spring2019.pdf"  <i class="subsubheading mb-3">Exploring extra dimensions with updated constraints on the variation of Newton's Constant</i> </a> - May 2019</li>  </div>
+      <div> <li> Fall Junior Paper: <a href="/pdfs/JP_Gab_Montefalcone.pdf"  <i class="subsubheading mb-3">The DarkSide Low Mass Experiment and its Physics Potential</i> </a>
+            - December 2018</li> </div>
+      </div>
+     </div>
+        
+        <div class="resume-item d-flex flex-column flex-md-row justify-content-between">
+          <div class="resume-content">
+            <h3 class="mb-0">Others</h3>
+            <div class="subheading mb-3"></div>
+            <div> <li> GRE - Physics Exam: <i class="fa-li fa fa-paperclip text-warning"></i> <a href="/pdfs/GRE_Physics_Exam-Prep.pdf"  <i class="subsubheading mb-3">GRE-Physics Complete Study-Guide</i> </a>
+            - August 2020</li> </div>
+            <div> <li> PHI 371- Philosophical Foundations of Probability Theory - Final Paper: <i class="fa-li fa fa-paperclip text-warning"></i> <a href="/pdfs/Final_PaperPHI371.pdf"  <i class="subsubheading mb-3">The radically conservative view of the Many Worlds Interpretation of quantum mechanics</i> </a>
+            - May 2020</li> </div>
+            <div> <li> COVID-19 Independent Data Analysis II: <a href="https://www.researchgate.net/publication/339988345_COVID-19_Data_Analysis_and_Predictions_in_Italy-Why_this_is_relevant_for_the_US"  <i class="subsubheading mb-3">Analysis and Predictions in Italy-Why this is relevant for the US</i> </a>
+            - March 2020 </li> </div>
+            <div> <li> COVID-19 Independent Data Analysis I: <a href="https://www.researchgate.net/publication/339944381_COVID-19_Analisi_dati_e_Previsioni_in_Italia_RESTIAMOACASA"  <i class="subsubheading mb-3">COVID-19 Analisi dati e Previsioni in Italia #RESTIAMOACASA</i> </a>
+            - March 2020 </li> </div>
+          <div> <li> Explorer Competition by Physics Unlimited: <a href="http://physicsu.org/explorer/2018_Explorer-Statistical.pdf"  <i class="subsubheading mb-3">An Introduction to Statistical Mechanics </i> </a>
+            - November 2018 </li> </div>
+          </div>
+        </div>
+      </div>
+
+ </section>
+    <hr class="m-0">
+
+    <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="education">
+      <div class="w-100">
+        <h2 class="mb-5">Education</h2>
+        <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
+          <div class="resume-content">
+            <h3 class="mb-0">University of Texas at Austin</h3>
+            <div class="subheading mb-3">Doctor of Philosophy</div>
+            <div>Physics - Thoeretical Cosmology</div>
+            <p>Advised by Katherine Freese</p>
+          </div>
+          <div class="resume-date text-md-right">
+            <span class="text-primary">September 2021 - Ongoing</span>
+          </div>
+        </div>
+        <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
+          <div class="resume-content">
+            <h3 class="mb-0">Princeton University</h3>
+            <div class="subheading mb-3">Bachelor of Arts</div>
+            <div>Physics</div>
+          </div>
+          <div class="resume-date text-md-right">
+            <span class="text-primary">September 2016 - June 2020</span>
+          </div>
+        </div>
+
+        <div class="resume-item d-flex flex-column flex-md-row justify-content-between">
+          <div class="resume-content">
+            <h3 class="mb-0">Liceo Scientifico Statale Augusto Righi</h3>
+            <div class="subheading mb-3">Science-Track High School Diploma</div>
+          </div>
+          <div class="resume-date text-md-right">
+            <span class="text-primary">September 2010 - June 2015</span>
+          </div>
+        </div>
+       <br>
+       <br>
+      <div class="resume-item d-flex flex-column flex-md-row justify-content-between">
+          <div class="resume-content">
+            <h3 class="mb-0">Landau Forte Academy Sixth Form</h3>
+            <div class="subheading mb-3"></div>
+            <p>1-semester student exchange program</p>
+          </div>
+          <div class="resume-date text-md-right">
+            <span class="text-primary">September 2013 - January 2014</span>
+          </div>
+        </div>
+      </div>
+
+    </section>

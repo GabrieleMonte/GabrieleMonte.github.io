@@ -70,25 +70,26 @@ async function fetchActivities(accessToken, afterUnix) {
 }
 
 function mapToSnapshotItems(activities){
-  // Keep only qualifying runs for the challenge summary (>= 3.2 km & type "Run")
   return activities
     .filter(a => a.type === 'Run')
     .map(a => {
       const distance_km = a.distance / 1000;
-      const start_iso = a.start_date; // already UTC ISO from Strava
+      const start_iso = a.start_date;
       const d = new Date(start_iso);
-      const time_hhmm = d.toISOString().slice(11,16); // HH:MM (UTC)
+      const time_hhmm = d.toISOString().slice(11,16); // start time (kept if you want it)
       return {
         id: a.id,
-        date: ymd(start_iso),
+        date: start_iso.slice(0,10),
         start_iso,
         distance_km,
-        moving_time_min: a.moving_time / 60,
+        moving_time_s: a.moving_time,         // <-- add this
+        moving_time_min: a.moving_time / 60,  // (legacy, still fine)
         avg_hr: a.average_heartrate ?? null,
         time_hhmm
       };
     });
 }
+
 
 function mergeById(oldArr, newArr){
   const merged = uniqById([...(oldArr||[]), ...newArr]);
@@ -99,21 +100,14 @@ function mergeById(oldArr, newArr){
 function buildIndexFromMonths(files){
   const months = [];
   for (const f of files) {
-    const ymKey = path.basename(f, '.json');
     const arr = readJSON(f);
-    // Only count days/miles where distance >= 3.2 km (2 miles)
-    const qualifying = arr.filter(a => a.distance_km >= 3.2);
+    const qualifying = arr.filter(a => a.distance_km >= 3.22);   // <-- 3.22
     const miles = qualifying.reduce((s,a)=> s + (a.distance_km / 1.60934), 0);
     const days = new Set(qualifying.map(a => a.date)).size;
-    months.push({ ym: ymKey, days, miles: Number(miles.toFixed(2)) });
+    months.push({ ym: path.basename(f, '.json'), days, miles: Number(miles.toFixed(2)) });
   }
   months.sort((a,b)=> a.ym.localeCompare(b.ym));
-  const index = {
-    start: START_ISO.slice(0,10),
-    months,
-    last_update: new Date().toISOString()
-  };
-  return index;
+  return { start: START_ISO.slice(0,10), months, last_update: new Date().toISOString() };
 }
 
 (async () => {

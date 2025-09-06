@@ -304,24 +304,64 @@
     </p>
     
      <!-- Calendar Container -->
-    <div id="calendar" style="background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 6px 20px rgba(0,0,0,.08); margin-bottom: 2rem;"></div>
+    <div id="calendar"></div>
     
     <!-- Stats Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 2rem;">
-      <div style="background:#fff; border-radius: 14px; padding: 16px 18px; box-shadow: 0 6px 20px rgba(0,0,0,.08); text-align: center;">
-        <div class="subheading mb-2">Total Days Run</div>
-        <div style="font-size: 2rem; font-weight: 800; color: #38bd6d;" id="days-run">—</div>
+    <div class="stats">
+      <div class="stat">
+        <div>Total Days Run: <span id="days-run">—</span></div>
       </div>
-      <div style="background:#fff; border-radius: 14px; padding: 16px 18px; box-shadow: 0 6px 20px rgba(0,0,0,.08); text-align: center;">
-        <div class="subheading mb-2">Total Mileage</div>
-        <div style="font-size: 2rem; font-weight: 800; color: #38bd6d;" id="total-mileage">—</div>
+      <div class="stat">
+        <div>Total Mileage: <span id="total-mileage">—</span></div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- Add these scripts at the bottom of your HTML, before the closing </body> tag -->
-
+<!-- CRITICAL STYLES FOR CALENDAR -->
+<style>
+  #calendar {
+    width: min(1200px, 92vw);
+    margin: 2vh auto;
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  }
+  .stats {
+    width: min(1200px, 92vw);
+    margin: 0 auto 2rem auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .stat {
+    background:#fff;
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.08);
+    font-weight:600;
+    display:flex; 
+    align-items:center; 
+    justify-content:center;
+  }
+  .stat span { 
+    font-weight:800; 
+    margin-left:.4rem; 
+  }
+  .fc .fc-toolbar-title { 
+    font-weight:700; 
+  }
+  .fc-event, .fc-event-main {
+    background: transparent !important;
+    border: none !important;
+    color: #212529 !important;
+    white-space: normal !important;
+  }
+  @media (max-width: 768px){
+    .stats { grid-template-columns: 1fr; }
+  }
+</style>
+</section>
 <!-- FullCalendar CSS and JS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>

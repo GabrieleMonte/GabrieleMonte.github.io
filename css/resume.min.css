@@ -125,3 +125,18 @@ details[open] > summary > .arrow {
   margin-left: 1.5rem;
   margin-top: 0.5rem;
 }
+
+#collapseAllBtn {
+  background-color: #38bd6d; /* your green accent */
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+#collapseAllBtn:hover {
+  background-color: #2e9a57;
+}
+

@@ -1,15 +1,16 @@
+# .github/workflows/strava-snapshot.yml
 name: Build Strava Monthly Snapshots
 
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: "17 4 * * *"   # every day at 04:17 UTC (off-peak)
+    - cron: "17 4 * * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # allow committing JSON to the repo
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,15 +20,21 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install deps
-        run: npm ci || npm i
+      # Remove/disable any "npm ci" or "npm i" steps
+
+      - name: Show package.json (debug)
+        run: |
+          echo "----- package.json head -----"
+          sed -n '1,120p' package.json || true
+          echo "----- package.json tail -----"
+          tail -n 60 package.json || true
 
       - name: Run snapshot builder
         env:
           STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
           STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
           STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
-        run: npm run fetch
+        run: node scripts/fetch_strava.js
 
       - name: Commit & push snapshots
         run: |

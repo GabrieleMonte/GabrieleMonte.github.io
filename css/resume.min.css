@@ -147,9 +147,9 @@ details[open] > summary .arrow::after {
 }
 
   .media2-item img {
-      width: calc(7vw + 40px);
+      width: calc(8vw + 40px);
       height: calc(3vw + 30px);
-      max-width: 250px;
+      max-width: 350px;
       max-height: 150px;
       object-fit: cover;
       border-radius: 1vw;
@@ -188,6 +188,13 @@ details[open] > summary .arrow::after {
       }
       .media2-item img,
       .media2-item iframe,
+      .media2-item iframe {
+      width: 100%;
+      height: auto;
+      max-width: 300px;
+      max-height: 200px;
+      margin-bottom: 2vh;
+      }
       .media2-item a,
       .media2-item p {
         font-size: calc(1.4vw + 0.6rem);

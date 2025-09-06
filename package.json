@@ -48,3 +48,12 @@
         "merge-stream": "2.0.0"
     }
 }
+{
+  "name": "strava-snapshot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch": "node scripts/fetch_strava.js"
+  },
+  "dependencies": {}
+}

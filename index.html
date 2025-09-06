@@ -425,9 +425,6 @@ function toEvent(a){
     const calendar = new FullCalendar.Calendar(calEl, {
     initialView: window.innerWidth < 768 ? 'dayGridWeek' : 'dayGridMonth',
     timeZone: 'local',
-    height: 'auto',
-    dayMaxEventRows: false, // Allow unlimited events per day
-    eventDisplay: 'block', // Display as block elements for better wrapping
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',

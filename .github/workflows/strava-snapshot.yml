@@ -78,26 +78,31 @@ jobs:
             }
             return out;
           }
-
+          
           function mapToSnapshotItems(activities){
             return activities
-              .filter(a => a.type === 'Run')
-              .map(a => {
-                const distance_km = a.distance / 1000;
-                const start_iso = a.start_date; // UTC ISO from Strava
-                const d = new Date(start_iso);
-                const time_hhmm = d.toISOString().slice(11,16); // HH:MM UTC
-                return {
-                  id: a.id,
-                  date: ymd(start_iso),
-                  start_iso,
-                  distance_km,
-                  moving_time_min: a.moving_time / 60,
-                  avg_hr: a.average_heartrate ?? null,
-                  time_hhmm
-                };
-              });
+            .filter(a => a.type === 'Run')
+            .map(a => {
+            const distance_km = a.distance / 1000;
+            // Strava gives both start_date (UTC) and start_date_local (your account’s local time).
+            // Use the local one so dates and months match Central Time exactly.
+            const start_iso = a.start_date_local;
+            const date_local = start_iso.slice(0,10);  // YYYY-MM-DD
+            const time_hhmm  = start_iso.slice(11,16); // HH:MM local
+            return {
+              id: a.id,
+              date: date_local,             // local Central-Time date
+              start_iso,                    // local ISO string
+              distance_km,
+              moving_time_s: a.moving_time,
+              moving_time_min: a.moving_time / 60,
+              avg_hr: a.average_heartrate ?? null,
+              time_hhmm
+              };
+            });
           }
+
+
 
           function mergeById(oldArr, newArr){
             const merged = uniqById([...(oldArr||[]), ...newArr]);

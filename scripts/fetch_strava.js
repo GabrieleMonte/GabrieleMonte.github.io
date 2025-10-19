@@ -96,18 +96,18 @@ function mergeById(oldArr, newArr){
   merged.sort((a,b)=> a.start_iso.localeCompare(b.start_iso));
   return merged;
 }
+
 function buildIndexFromMonths(files){
   const months = [];
 
-  // Helper: convert UTC timestamp -> YYYY-MM-DD in Central Time (UTC−6 winter / −5 summer)
-  function toCentralDate(iso) {
+  // Convert a UTC timestamp -> YYYY-MM-DD in U.S. Central Time (DST aware)
+  function toCentralDate(iso){
     const d = new Date(iso);
-    // Central Time offset depends on daylight saving; use current offset dynamically
-    // This approximates CT correctly for all modern dates
-    const tzOffset = 6 * 60 * 60 * 1000; // 6 hours behind UTC
-    const summer = new Date(d).getTimezoneOffset() < 360; // DST heuristic if running locally
-    const offset = summer ? 5 * 60 * 60 * 1000 : tzOffset;
-    const local = new Date(d.getTime() - offset);
+    // get UTC time in ms, shift back by 5 hours (≈ CDT) or 6 hours (≈ CST)
+    // pick offset based on the run’s month for rough DST handling
+    const month = d.getUTCMonth() + 1; // 1–12
+    const offsetHours = (month >= 3 && month <= 10) ? 5 : 6;
+    const local = new Date(d.getTime() - offsetHours * 60 * 60 * 1000);
     return local.toISOString().slice(0,10);
   }
 
@@ -115,14 +115,15 @@ function buildIndexFromMonths(files){
     const ymKey = path.basename(f, '.json');
     const arr = readJSON(f);
 
-    // Keep only ≥ 3.22 km
+    // Keep only runs ≥ 3.22 km (2 miles)
     const qualifying = arr.filter(a => a.distance_km >= 3.22);
 
-    // Convert to Central-time dates
+    // Compute Central-time dates
     const datesCT = qualifying.map(a => toCentralDate(a.start_iso));
 
+    // Miles and unique-day count (Central Time)
     const miles = qualifying.reduce((s,a)=> s + (a.distance_km / 1.60934), 0);
-    const days = new Set(datesCT).size;
+    const days  = new Set(datesCT).size;
 
     months.push({ ym: ymKey, days, miles: Number(miles.toFixed(2)) });
   }
@@ -134,6 +135,7 @@ function buildIndexFromMonths(files){
     last_update: new Date().toISOString()
   };
 }
+
 
 
 (async () => {

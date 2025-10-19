@@ -100,30 +100,29 @@ function mergeById(oldArr, newArr){
 function buildIndexFromMonths(files){
   const months = [];
 
-  // Convert a UTC timestamp -> YYYY-MM-DD in U.S. Central Time (DST aware)
+  // Helper: convert UTC timestamp → YYYY-MM-DD in Central Time
   function toCentralDate(iso){
     const d = new Date(iso);
-    // get UTC time in ms, shift back by 5 hours (≈ CDT) or 6 hours (≈ CST)
-    // pick offset based on the run’s month for rough DST handling
-    const month = d.getUTCMonth() + 1; // 1–12
-    const offsetHours = (month >= 3 && month <= 10) ? 5 : 6;
-    const local = new Date(d.getTime() - offsetHours * 60 * 60 * 1000);
-    return local.toISOString().slice(0,10);
+    // Central Time is UTC−5 during DST (Mar–Oct), UTC−6 otherwise.
+    const m = d.getUTCMonth() + 1;              // month 1–12
+    const offsetHours = (m >= 3 && m <= 10) ? 5 : 6;
+    const shifted = new Date(d.getTime() - offsetHours * 3600 * 1000);
+    // Slice to date string (still UTC form but representing CT day)
+    return shifted.toISOString().slice(0,10);
   }
 
-  for (const f of files) {
+  for (const f of files){
     const ymKey = path.basename(f, '.json');
     const arr = readJSON(f);
 
-    // Keep only runs ≥ 3.22 km (2 miles)
+    // keep runs ≥ 3.22 km
     const qualifying = arr.filter(a => a.distance_km >= 3.22);
 
-    // Compute Central-time dates
-    const datesCT = qualifying.map(a => toCentralDate(a.start_iso));
+    // build set of Central-Time dates
+    const daysCT = new Set(qualifying.map(a => toCentralDate(a.start_iso)));
 
-    // Miles and unique-day count (Central Time)
-    const miles = qualifying.reduce((s,a)=> s + (a.distance_km / 1.60934), 0);
-    const days  = new Set(datesCT).size;
+    const miles = qualifying.reduce((s,a)=> s + a.distance_km / 1.60934, 0);
+    const days  = daysCT.size;
 
     months.push({ ym: ymKey, days, miles: Number(miles.toFixed(2)) });
   }

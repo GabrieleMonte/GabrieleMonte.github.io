@@ -74,21 +74,25 @@ function mapToSnapshotItems(activities){
     .filter(a => a.type === 'Run')
     .map(a => {
       const distance_km = a.distance / 1000;
-      const start_iso = a.start_date;
-      const d = new Date(start_iso);
-      const time_hhmm = d.toISOString().slice(11,16); // start time (kept if you want it)
+
+      // Use Strava's local time — already in Central Time
+      const start_local = a.start_date_local;   // ISO string like "2025-09-04T23:00:12Z"
+      const date_local  = start_local.slice(0,10);  // "YYYY-MM-DD"
+      const time_hhmm   = start_local.slice(11,16); // "HH:MM"
+
       return {
         id: a.id,
-        date: start_iso.slice(0,10),
-        start_iso,
+        date: date_local,             // <-- local (Central Time) date
+        start_iso: start_local,       // store the local ISO string
         distance_km,
-        moving_time_s: a.moving_time,         // <-- add this
-        moving_time_min: a.moving_time / 60,  // (legacy, still fine)
+        moving_time_s: a.moving_time,
+        moving_time_min: a.moving_time / 60,
         avg_hr: a.average_heartrate ?? null,
         time_hhmm
       };
     });
 }
+
 
 
 function mergeById(oldArr, newArr){

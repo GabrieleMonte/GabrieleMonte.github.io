@@ -96,7 +96,6 @@ function mergeById(oldArr, newArr){
   merged.sort((a,b)=> a.start_iso.localeCompare(b.start_iso));
   return merged;
 }
-
 function buildIndexFromMonths(files){
   const months = [];
 

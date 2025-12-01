@@ -1,0 +1,382 @@
+[
+  {
+    "id": 15677840167,
+    "date": "2025-09-01",
+    "start_iso": "2025-09-01T23:40:35Z",
+    "distance_km": 3.2443,
+    "moving_time_s": 887,
+    "moving_time_min": 14.783333333333333,
+    "avg_hr": 139.3,
+    "time_hhmm": "23:40"
+  },
+  {
+    "id": 15677840148,
+    "date": "2025-09-02",
+    "start_iso": "2025-09-02T19:35:39Z",
+    "distance_km": 8.078899999999999,
+    "moving_time_s": 1833,
+    "moving_time_min": 30.55,
+    "avg_hr": 157.8,
+    "time_hhmm": "19:35"
+  },
+  {
+    "id": 15687046622,
+    "date": "2025-09-03",
+    "start_iso": "2025-09-03T13:59:28Z",
+    "distance_km": 8.0731,
+    "moving_time_s": 1998,
+    "moving_time_min": 33.3,
+    "avg_hr": 166.3,
+    "time_hhmm": "13:59"
+  },
+  {
+    "id": 15701834645,
+    "date": "2025-09-04",
+    "start_iso": "2025-09-04T23:06:19Z",
+    "distance_km": 8.0775,
+    "moving_time_s": 2193,
+    "moving_time_min": 36.55,
+    "avg_hr": 149.5,
+    "time_hhmm": "23:06"
+  },
+  {
+    "id": 15712234138,
+    "date": "2025-09-05",
+    "start_iso": "2025-09-05T23:15:37Z",
+    "distance_km": 8.0736,
+    "moving_time_s": 2156,
+    "moving_time_min": 35.93333333333333,
+    "avg_hr": 154.9,
+    "time_hhmm": "23:15"
+  },
+  {
+    "id": 15723338220,
+    "date": "2025-09-06",
+    "start_iso": "2025-09-06T20:15:47Z",
+    "distance_km": 7.7365,
+    "moving_time_s": 1809,
+    "moving_time_min": 30.15,
+    "avg_hr": 152.1,
+    "time_hhmm": "20:15"
+  },
+  {
+    "id": 15735301476,
+    "date": "2025-09-07",
+    "start_iso": "2025-09-07T18:20:25Z",
+    "distance_km": 21.1146,
+    "moving_time_s": 5208,
+    "moving_time_min": 86.8,
+    "avg_hr": 149.5,
+    "time_hhmm": "18:20"
+  },
+  {
+    "id": 15754429692,
+    "date": "2025-09-08",
+    "start_iso": "2025-09-08T17:59:35Z",
+    "distance_km": 4.0576,
+    "moving_time_s": 1862,
+    "moving_time_min": 31.033333333333335,
+    "avg_hr": 107.7,
+    "time_hhmm": "17:59"
+  },
+  {
+    "id": 15754430169,
+    "date": "2025-09-08",
+    "start_iso": "2025-09-08T18:33:47Z",
+    "distance_km": 8.0807,
+    "moving_time_s": 2275,
+    "moving_time_min": 37.916666666666664,
+    "avg_hr": 151.3,
+    "time_hhmm": "18:33"
+  },
+  {
+    "id": 15759856598,
+    "date": "2025-09-09",
+    "start_iso": "2025-09-09T23:32:11Z",
+    "distance_km": 3.2478000000000002,
+    "moving_time_s": 1070,
+    "moving_time_min": 17.833333333333332,
+    "avg_hr": 120.9,
+    "time_hhmm": "23:32"
+  },
+  {
+    "id": 15818818122,
+    "date": "2025-09-10",
+    "start_iso": "2025-09-10T22:07:54Z",
+    "distance_km": 3.2273,
+    "moving_time_s": 930,
+    "moving_time_min": 15.5,
+    "avg_hr": 141.5,
+    "time_hhmm": "22:07"
+  },
+  {
+    "id": 15818818064,
+    "date": "2025-09-11",
+    "start_iso": "2025-09-11T07:01:43Z",
+    "distance_km": 7.0362,
+    "moving_time_s": 2463,
+    "moving_time_min": 41.05,
+    "avg_hr": 128,
+    "time_hhmm": "07:01"
+  },
+  {
+    "id": 15818818023,
+    "date": "2025-09-12",
+    "start_iso": "2025-09-12T18:37:28Z",
+    "distance_km": 10.0745,
+    "moving_time_s": 2461,
+    "moving_time_min": 41.016666666666666,
+    "avg_hr": 138.7,
+    "time_hhmm": "18:37"
+  },
+  {
+    "id": 15818818450,
+    "date": "2025-09-13",
+    "start_iso": "2025-09-13T18:14:49Z",
+    "distance_km": 3.258,
+    "moving_time_s": 1054,
+    "moving_time_min": 17.566666666666666,
+    "avg_hr": 132.3,
+    "time_hhmm": "18:14"
+  },
+  {
+    "id": 15818823391,
+    "date": "2025-09-13",
+    "start_iso": "2025-09-13T18:47:50Z",
+    "distance_km": 2.8508,
+    "moving_time_s": 1916,
+    "moving_time_min": 31.933333333333334,
+    "avg_hr": 99.4,
+    "time_hhmm": "18:47"
+  },
+  {
+    "id": 15818823372,
+    "date": "2025-09-14",
+    "start_iso": "2025-09-14T18:49:34Z",
+    "distance_km": 3.2471,
+    "moving_time_s": 1046,
+    "moving_time_min": 17.433333333333334,
+    "avg_hr": 137.3,
+    "time_hhmm": "18:49"
+  },
+  {
+    "id": 15818823402,
+    "date": "2025-09-14",
+    "start_iso": "2025-09-14T19:18:27Z",
+    "distance_km": 1.6162999999999998,
+    "moving_time_s": 985,
+    "moving_time_min": 16.416666666666668,
+    "avg_hr": 103.5,
+    "time_hhmm": "19:18"
+  },
+  {
+    "id": 15825579365,
+    "date": "2025-09-15",
+    "start_iso": "2025-09-15T18:09:00Z",
+    "distance_km": 10.1389,
+    "moving_time_s": 2647,
+    "moving_time_min": 44.11666666666667,
+    "avg_hr": 148.9,
+    "time_hhmm": "18:09"
+  },
+  {
+    "id": 15838457953,
+    "date": "2025-09-16",
+    "start_iso": "2025-09-16T23:02:03Z",
+    "distance_km": 3.256,
+    "moving_time_s": 1350,
+    "moving_time_min": 22.5,
+    "avg_hr": 112.3,
+    "time_hhmm": "23:02"
+  },
+  {
+    "id": 15847149600,
+    "date": "2025-09-17",
+    "start_iso": "2025-09-17T14:52:32Z",
+    "distance_km": 2.7628000000000004,
+    "moving_time_s": 1127,
+    "moving_time_min": 18.783333333333335,
+    "avg_hr": 114.5,
+    "time_hhmm": "14:52"
+  },
+  {
+    "id": 15847149449,
+    "date": "2025-09-17",
+    "start_iso": "2025-09-17T15:20:12Z",
+    "distance_km": 8.0534,
+    "moving_time_s": 2379,
+    "moving_time_min": 39.65,
+    "avg_hr": 163,
+    "time_hhmm": "15:20"
+  },
+  {
+    "id": 15861057828,
+    "date": "2025-09-18",
+    "start_iso": "2025-09-18T22:36:17Z",
+    "distance_km": 8.078899999999999,
+    "moving_time_s": 1810,
+    "moving_time_min": 30.166666666666668,
+    "avg_hr": 147.5,
+    "time_hhmm": "22:36"
+  },
+  {
+    "id": 15870598177,
+    "date": "2025-09-19",
+    "start_iso": "2025-09-19T18:49:29Z",
+    "distance_km": 14.5163,
+    "moving_time_s": 3750,
+    "moving_time_min": 62.5,
+    "avg_hr": 149.5,
+    "time_hhmm": "18:49"
+  },
+  {
+    "id": 15882009945,
+    "date": "2025-09-20",
+    "start_iso": "2025-09-20T17:50:03Z",
+    "distance_km": 2.5643000000000002,
+    "moving_time_s": 2177,
+    "moving_time_min": 36.28333333333333,
+    "avg_hr": 99.3,
+    "time_hhmm": "17:50"
+  },
+  {
+    "id": 15883024519,
+    "date": "2025-09-20",
+    "start_iso": "2025-09-20T22:39:03Z",
+    "distance_km": 3.2335,
+    "moving_time_s": 1016,
+    "moving_time_min": 16.933333333333334,
+    "avg_hr": 126.7,
+    "time_hhmm": "22:39"
+  },
+  {
+    "id": 15893816706,
+    "date": "2025-09-21",
+    "start_iso": "2025-09-21T17:36:49Z",
+    "distance_km": 4.6316999999999995,
+    "moving_time_s": 1930,
+    "moving_time_min": 32.166666666666664,
+    "avg_hr": 95.5,
+    "time_hhmm": "17:36"
+  },
+  {
+    "id": 15894588725,
+    "date": "2025-09-21",
+    "start_iso": "2025-09-21T22:26:06Z",
+    "distance_km": 3.259,
+    "moving_time_s": 985,
+    "moving_time_min": 16.416666666666668,
+    "avg_hr": 129.2,
+    "time_hhmm": "22:26"
+  },
+  {
+    "id": 15904054685,
+    "date": "2025-09-22",
+    "start_iso": "2025-09-22T18:20:33Z",
+    "distance_km": 8.078899999999999,
+    "moving_time_s": 1782,
+    "moving_time_min": 29.7,
+    "avg_hr": 156.7,
+    "time_hhmm": "18:20"
+  },
+  {
+    "id": 15920001728,
+    "date": "2025-09-23",
+    "start_iso": "2025-09-23T22:12:57Z",
+    "distance_km": 3.2408,
+    "moving_time_s": 1018,
+    "moving_time_min": 16.966666666666665,
+    "avg_hr": 128.3,
+    "time_hhmm": "22:12"
+  },
+  {
+    "id": 15927440844,
+    "date": "2025-09-24",
+    "start_iso": "2025-09-24T19:37:03Z",
+    "distance_km": 8.078899999999999,
+    "moving_time_s": 1795,
+    "moving_time_min": 29.916666666666668,
+    "avg_hr": 157.5,
+    "time_hhmm": "19:37"
+  },
+  {
+    "id": 15938325374,
+    "date": "2025-09-25",
+    "start_iso": "2025-09-25T19:23:49Z",
+    "distance_km": 24.1723,
+    "moving_time_s": 6147,
+    "moving_time_min": 102.45,
+    "avg_hr": 155.7,
+    "time_hhmm": "19:23"
+  },
+  {
+    "id": 15947825886,
+    "date": "2025-09-26",
+    "start_iso": "2025-09-26T18:43:12Z",
+    "distance_km": 1.5185,
+    "moving_time_s": 609,
+    "moving_time_min": 10.15,
+    "avg_hr": 110.4,
+    "time_hhmm": "18:43"
+  },
+  {
+    "id": 15948685535,
+    "date": "2025-09-26",
+    "start_iso": "2025-09-26T23:23:37Z",
+    "distance_km": 8.0775,
+    "moving_time_s": 2156,
+    "moving_time_min": 35.93333333333333,
+    "avg_hr": 150,
+    "time_hhmm": "23:23"
+  },
+  {
+    "id": 15967843077,
+    "date": "2025-09-27",
+    "start_iso": "2025-09-27T17:06:31Z",
+    "distance_km": 3.2422,
+    "moving_time_s": 943,
+    "moving_time_min": 15.716666666666667,
+    "avg_hr": 140.4,
+    "time_hhmm": "17:06"
+  },
+  {
+    "id": 15967850090,
+    "date": "2025-09-27",
+    "start_iso": "2025-09-27T17:41:52Z",
+    "distance_km": 2.3,
+    "moving_time_s": 1008,
+    "moving_time_min": 16.8,
+    "avg_hr": 99.8,
+    "time_hhmm": "17:41"
+  },
+  {
+    "id": 15970115087,
+    "date": "2025-09-28",
+    "start_iso": "2025-09-28T16:35:43Z",
+    "distance_km": 5.105600000000001,
+    "moving_time_s": 1192,
+    "moving_time_min": 19.866666666666667,
+    "avg_hr": 123.7,
+    "time_hhmm": "16:35"
+  },
+  {
+    "id": 15975139946,
+    "date": "2025-09-29",
+    "start_iso": "2025-09-29T07:33:54Z",
+    "distance_km": 8.0628,
+    "moving_time_s": 1769,
+    "moving_time_min": 29.483333333333334,
+    "avg_hr": 156.9,
+    "time_hhmm": "07:33"
+  },
+  {
+    "id": 16008636773,
+    "date": "2025-09-30",
+    "start_iso": "2025-09-30T21:34:53Z",
+    "distance_km": 3.2515,
+    "moving_time_s": 902,
+    "moving_time_min": 15.033333333333333,
+    "avg_hr": 138.5,
+    "time_hhmm": "21:34"
+  }
+]

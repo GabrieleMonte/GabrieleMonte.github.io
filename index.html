@@ -437,11 +437,27 @@ function formatPaceMMSSperKm(seconds, km){
   return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}/km`;
 }
 
+// --- Force treating start_iso as *local Central Time*, ignoring the Z ----
+function parseAsCentral(isoStr) {
+  // Strip any trailing Z or offset
+  const clean = isoStr.replace(/Z|[+-]\d\d:\d\d$/, '');
+
+  const [datePart, timePart] = clean.split('T');
+  const [year, month, day] = datePart.split('-').map(Number);
+  const [hour, minute, second = 0] = timePart.split(':').map(Number);
+
+  // Construct a *local* datetime object — no timezone shifts
+  return new Date(year, month - 1, day, hour, minute, second);
+}
+
 function toEvent(a){
-  const endISO = new Date(new Date(a.start_iso).getTime() + 6*60*1000).toISOString(); // short block
+  const start = parseAsCentral(a.start_iso);
+
   const secs = a.moving_time_s ?? (a.moving_time_min ? a.moving_time_min * 60 : 0);
+  const end   = new Date(start.getTime() + (secs || 360) * 1000);
+
   const dur  = formatDurationHHMMSS(secs);
-  const pace = formatPaceMMSSperKm(secs, a.distance_km); // optional, comment out if you don't want it
+  const pace = formatPaceMMSSperKm(secs, a.distance_km);
 
   const bits = [
     `${a.distance_km.toFixed(2)} km`,
@@ -453,11 +469,12 @@ function toEvent(a){
   return {
     id: String(a.id),
     title: bits.join(' • '),
-    start: a.start_iso,
-    end: endISO,
+    start,
+    end,
     allDay: false
   };
 }
+
 
 
   // ========= INIT =========

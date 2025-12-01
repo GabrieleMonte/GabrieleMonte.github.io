@@ -15,9 +15,9 @@ const fs = require('fs');
 const path = require('path');
 
 const OUT_DIR = path.join(process.cwd(), 'data', 'activities');
-const START_ISO = '2024-12-07T00:00:00Z'; // first day of the challenge
+const START_ISO = '2024-12-07T00:00:00Z';
 
-// --- Helpers ---
+// ---------- Helpers ----------
 function ensureDir(p){ fs.mkdirSync(p, { recursive: true }); }
 function readJSON(p){ return JSON.parse(fs.readFileSync(p, 'utf8')); }
 function writeJSON(p, obj){
@@ -35,6 +35,7 @@ function uniqById(arr){
   return Array.from(m.values());
 }
 
+// ---------- Token ----------
 async function refreshAccessToken() {
   const r = await fetch('https://www.strava.com/oauth/token', {
     method: 'POST',
@@ -51,8 +52,8 @@ async function refreshAccessToken() {
   return j.access_token;
 }
 
+// ---------- Fetch Activities ----------
 async function fetchActivities(accessToken, afterUnix) {
-  // fetch in pages until exhaustion
   let page = 1, per_page = 200, out = [];
   while (true) {
     const url = new URL('https://www.strava.com/api/v3/athlete/activities');
@@ -69,21 +70,36 @@ async function fetchActivities(accessToken, afterUnix) {
   return out;
 }
 
+// ---------- FIXED VERSION (correct timezone handling) ----------
 function mapToSnapshotItems(activities){
   return activities
     .filter(a => a.type === 'Run')
     .map(a => {
+      
       const distance_km = a.distance / 1000;
 
-      // Use Strava's local time — already in Central Time
-      const start_local = a.start_date_local;   // ISO string like "2025-09-04T23:00:12Z"
-      const date_local  = start_local.slice(0,10);  // "YYYY-MM-DD"
-      const time_hhmm   = start_local.slice(11,16); // "HH:MM"
+      // A) UTC timestamp from Strava
+      const utcISO = a.start_date; // e.g. "2025-09-05T04:00:12Z"
+      
+      // B) Strava provides offset in seconds for the location/time
+      const offsetSec = a.utc_offset ?? 0;    // e.g. -18000
+      const offsetMs  = offsetSec * 1000;
+
+      // C) Compute true local time at run location
+      const localISO = new Date(new Date(utcISO).getTime() + offsetMs).toISOString();
+
+      // Extract day + HH:MM in local time
+      const date_local = localISO.slice(0,10);
+      const time_hhmm  = localISO.slice(11,16);
 
       return {
         id: a.id,
-        date: date_local,             // <-- local (Central Time) date
-        start_iso: start_local,       // store the local ISO string
+        date: date_local,          
+        start_iso: localISO,        // <-- true local time
+        utc_start: utcISO,          // keep for debugging
+        utc_offset: offsetSec,      // save exact offset
+        start_latlng: a.start_latlng ?? null,
+
         distance_km,
         moving_time_s: a.moving_time,
         moving_time_min: a.moving_time / 60,
@@ -93,40 +109,41 @@ function mapToSnapshotItems(activities){
     });
 }
 
-
-
+// ---------- Merge ----------
 function mergeById(oldArr, newArr){
   const merged = uniqById([...(oldArr||[]), ...newArr]);
   merged.sort((a,b)=> a.start_iso.localeCompare(b.start_iso));
   return merged;
 }
 
+// ---------- Build index ----------
 function buildIndexFromMonths(files){
   const months = [];
   for (const f of files) {
     const arr = readJSON(f);
-    const qualifying = arr.filter(a => a.distance_km >= 3.22);   // <-- 3.22
+    const qualifying = arr.filter(a => a.distance_km >= 3.22);
     const miles = qualifying.reduce((s,a)=> s + (a.distance_km / 1.60934), 0);
     const days = new Set(qualifying.map(a => a.date)).size;
     months.push({ ym: path.basename(f, '.json'), days, miles: Number(miles.toFixed(2)) });
   }
   months.sort((a,b)=> a.ym.localeCompare(b.ym));
-  return { start: START_ISO.slice(0,10), months, last_update: new Date().toISOString() };
+  return {
+    start: START_ISO.slice(0,10),
+    months,
+    last_update: new Date().toISOString()
+  };
 }
 
-
+// ---------- MAIN ----------
 (async () => {
   ensureDir(OUT_DIR);
 
-  // Determine "after" cutoff = max of last-saved timestamp or START_ISO
-  // We scan existing monthly files to find the max timestamp already saved, so we only pull deltas.
   let afterISO = START_ISO;
-  const existing = fs.readdirSync(OUT_DIR)
-    .filter(n => /^\d{4}-\d{2}\.json$/.test(n))
-    .map(n => path.join(OUT_DIR, n));
+  const existing = fs.existsSync(OUT_DIR)
+    ? fs.readdirSync(OUT_DIR).filter(n => /^\d{4}-\d{2}\.json$/.test(n)).map(n => path.join(OUT_DIR, n))
+    : [];
 
   if (existing.length) {
-    // read last file for its final item
     const latestFile = existing.sort().slice(-1)[0];
     const arr = readJSON(latestFile);
     if (arr.length) afterISO = arr[arr.length - 1].start_iso;
@@ -137,8 +154,8 @@ function buildIndexFromMonths(files){
   const acts = await fetchActivities(token, afterUnix);
   const items = mapToSnapshotItems(acts);
 
-  // Bucket by month and merge with existing monthly files
-  const buckets = new Map(); // ym -> items[]
+  // Bucket by month
+  const buckets = new Map();
   for (const it of items) {
     const key = ym(it.start_iso);
     if (!buckets.has(key)) buckets.set(key, []);
@@ -153,18 +170,15 @@ function buildIndexFromMonths(files){
     writeJSON(p, merged);
   }
 
-  // (Re)build index.json from all monthly files
-  const monthFiles = fs.readdirSync(OUT_DIR)
-    .filter(n => /^\d{4}-\d{2}\.json$/.test(n))
-    .map(n => path.join(OUT_DIR, n));
-  const index = buildIndexFromMonths(monthFiles);
-  writeJSON(path.join(OUT_DIR, 'index.json'), index);
+  const monthFiles = fs.existsSync(OUT_DIR)
+    ? fs.readdirSync(OUT_DIR).filter(n => /^\d{4}-\d{2}\.json$/.test(n)).map(n => path.join(OUT_DIR, n))
+    : [];
+  writeJSON(path.join(OUT_DIR, 'index.json'), buildIndexFromMonths(monthFiles));
 
-  // Build "recent 30d" static files (for fast frontend freshness)
+  // Recent 30 days
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setUTCDate(thirtyDaysAgo.getUTCDate() - 30);
 
-  // Gather all recent items from monthly files + any freshly fetched
   const allRecent = [];
   for (const f of monthFiles) {
     const arr = readJSON(f);
@@ -172,7 +186,6 @@ function buildIndexFromMonths(files){
       if (new Date(it.start_iso) >= thirtyDaysAgo) allRecent.push(it);
     }
   }
-  // include current batch too (in case of same-month write)
   for (const it of items) {
     if (new Date(it.start_iso) >= thirtyDaysAgo) allRecent.push(it);
   }
@@ -180,17 +193,15 @@ function buildIndexFromMonths(files){
   const recentUniq = uniqById(allRecent).sort((a,b)=> a.start_iso.localeCompare(b.start_iso));
   writeJSON(path.join(OUT_DIR, 'recent-30d.json'), recentUniq);
 
-  const recentQual = recentUniq.filter(a => a.distance_km >= 3.2);
+  const recentQual = recentUniq.filter(a => a.distance_km >= 3.22);
   const recentMiles = recentQual.reduce((s,a)=> s + (a.distance_km/1.60934), 0);
-  const recentDays  = new Set(recentQual.map(a=>a.date)).size;
+  const recentDays = new Set(recentQual.map(a=>a.date)).size;
+
   writeJSON(path.join(OUT_DIR, 'recent-30d-summary.json'), {
     days: recentDays,
     miles: Number(recentMiles.toFixed(2)),
     generated_at: new Date().toISOString()
   });
 
-  console.log(`Wrote ${monthFiles.length} month files, index.json, and recent-30d files.`);
-})().catch(e => {
-  console.error(e);
-  process.exit(1);
-});
+  console.log("Done.");
+})().catch(e => { console.error(e); process.exit(1); });

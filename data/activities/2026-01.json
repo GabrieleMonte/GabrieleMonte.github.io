@@ -68,5 +68,15 @@
     "moving_time_min": 18.366666666666667,
     "avg_hr": 95.5,
     "time_hhmm": "17:44"
+  },
+  {
+    "id": 16950668905,
+    "date": "2026-01-05",
+    "start_iso": "2026-01-05T16:44:44Z",
+    "distance_km": 11.2821,
+    "moving_time_s": 3127,
+    "moving_time_min": 52.11666666666667,
+    "avg_hr": 151,
+    "time_hhmm": "16:44"
   }
 ]

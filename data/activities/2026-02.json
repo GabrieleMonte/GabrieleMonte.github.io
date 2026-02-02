@@ -1,0 +1,22 @@
+[
+  {
+    "id": 17255657989,
+    "date": "2026-02-01",
+    "start_iso": "2026-02-01T17:09:05Z",
+    "distance_km": 3.2422,
+    "moving_time_s": 1012,
+    "moving_time_min": 16.866666666666667,
+    "avg_hr": null,
+    "time_hhmm": "17:09"
+  },
+  {
+    "id": 17255660577,
+    "date": "2026-02-01",
+    "start_iso": "2026-02-01T17:33:14Z",
+    "distance_km": 3.2534,
+    "moving_time_s": 1672,
+    "moving_time_min": 27.866666666666667,
+    "avg_hr": null,
+    "time_hhmm": "17:33"
+  }
+]

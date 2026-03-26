@@ -1,15 +1,5 @@
 [
   {
-    "id": 17500037405,
-    "date": "2026-02-23",
-    "start_iso": "2026-02-23T16:43:23Z",
-    "distance_km": 12.8924,
-    "moving_time_s": 3327,
-    "moving_time_min": 55.45,
-    "avg_hr": 152.5,
-    "time_hhmm": "16:43"
-  },
-  {
     "id": 17526254426,
     "date": "2026-02-24",
     "start_iso": "2026-02-24T17:19:18Z",
@@ -428,5 +418,15 @@
     "moving_time_min": 25.366666666666667,
     "avg_hr": 123.8,
     "time_hhmm": "05:10"
+  },
+  {
+    "id": 17861331279,
+    "date": "2026-03-25",
+    "start_iso": "2026-03-25T23:05:41Z",
+    "distance_km": 3.2321,
+    "moving_time_s": 942,
+    "moving_time_min": 15.7,
+    "avg_hr": 142.9,
+    "time_hhmm": "23:05"
   }
 ]

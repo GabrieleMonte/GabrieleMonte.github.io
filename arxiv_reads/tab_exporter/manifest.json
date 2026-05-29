@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "arxiv_reads tab exporter",
+  "version": "1.0",
+  "description": "Sends tabs of the current window to import_tabs.py.",
+  "permissions": ["tabs"],
+  "host_permissions": ["http://localhost/*"],
+  "background": { "service_worker": "bg.js" },
+  "action": { "default_title": "Export tabs to import_tabs.py" },
+  "commands": {
+    "export-tabs": {
+      "suggested_key": { "default": "Ctrl+Shift+Y" },
+      "description": "Export current window tabs to import_tabs.py"
+    }
+  }
+}

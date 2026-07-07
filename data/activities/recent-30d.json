@@ -1,25 +1,5 @@
 [
   {
-    "id": 18816738425,
-    "date": "2026-06-06",
-    "start_iso": "2026-06-06T17:32:02Z",
-    "distance_km": 17.7189,
-    "moving_time_s": 4007,
-    "moving_time_min": 66.78333333333333,
-    "avg_hr": 144.9,
-    "time_hhmm": "17:32"
-  },
-  {
-    "id": 18816738419,
-    "date": "2026-06-06",
-    "start_iso": "2026-06-06T18:57:20Z",
-    "distance_km": 3.2348000000000003,
-    "moving_time_s": 962,
-    "moving_time_min": 16.033333333333335,
-    "avg_hr": 134.3,
-    "time_hhmm": "18:57"
-  },
-  {
     "id": 18830124318,
     "date": "2026-06-07",
     "start_iso": "2026-06-07T16:03:37Z",
@@ -568,5 +548,15 @@
     "moving_time_min": 50.96666666666667,
     "avg_hr": 141.7,
     "time_hhmm": "07:59"
+  },
+  {
+    "id": 19208850099,
+    "date": "2026-07-06",
+    "start_iso": "2026-07-06T21:01:04Z",
+    "distance_km": 3.3635,
+    "moving_time_s": 1281,
+    "moving_time_min": 21.35,
+    "avg_hr": 123,
+    "time_hhmm": "21:01"
   }
 ]

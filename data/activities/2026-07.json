@@ -118,5 +118,35 @@
     "moving_time_min": 35.166666666666664,
     "avg_hr": 143.9,
     "time_hhmm": "05:04"
+  },
+  {
+    "id": 19236559550,
+    "date": "2026-07-07",
+    "start_iso": "2026-07-07T18:24:20Z",
+    "distance_km": 4.9351,
+    "moving_time_s": 1788,
+    "moving_time_min": 29.8,
+    "avg_hr": 117.4,
+    "time_hhmm": "18:24"
+  },
+  {
+    "id": 19236563897,
+    "date": "2026-07-07",
+    "start_iso": "2026-07-07T19:10:22Z",
+    "distance_km": 4.8529,
+    "moving_time_s": 1574,
+    "moving_time_min": 26.233333333333334,
+    "avg_hr": 123.9,
+    "time_hhmm": "19:10"
+  },
+  {
+    "id": 19236564061,
+    "date": "2026-07-08",
+    "start_iso": "2026-07-08T17:32:05Z",
+    "distance_km": 11.297600000000001,
+    "moving_time_s": 2564,
+    "moving_time_min": 42.733333333333334,
+    "avg_hr": 150.9,
+    "time_hhmm": "17:32"
   }
 ]

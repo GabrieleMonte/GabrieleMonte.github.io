@@ -1,45 +1,5 @@
 [
   {
-    "id": 19075204532,
-    "date": "2026-06-26",
-    "start_iso": "2026-06-26T10:39:56Z",
-    "distance_km": 3.2376,
-    "moving_time_s": 1006,
-    "moving_time_min": 16.766666666666666,
-    "avg_hr": 125.6,
-    "time_hhmm": "10:39"
-  },
-  {
-    "id": 19075627204,
-    "date": "2026-06-26",
-    "start_iso": "2026-06-26T11:05:21Z",
-    "distance_km": 4.8223,
-    "moving_time_s": 1982,
-    "moving_time_min": 33.03333333333333,
-    "avg_hr": 137.2,
-    "time_hhmm": "11:05"
-  },
-  {
-    "id": 19085580972,
-    "date": "2026-06-27",
-    "start_iso": "2026-06-27T06:33:23Z",
-    "distance_km": 1.7832999999999999,
-    "moving_time_s": 558,
-    "moving_time_min": 9.3,
-    "avg_hr": 125.4,
-    "time_hhmm": "06:33"
-  },
-  {
-    "id": 19085581071,
-    "date": "2026-06-27",
-    "start_iso": "2026-06-27T07:10:34Z",
-    "distance_km": 5.0145,
-    "moving_time_s": 1089,
-    "moving_time_min": 18.15,
-    "avg_hr": 134.1,
-    "time_hhmm": "07:10"
-  },
-  {
     "id": 19091863131,
     "date": "2026-06-27",
     "start_iso": "2026-06-27T18:03:49Z",
@@ -548,5 +508,15 @@
     "moving_time_min": 29.216666666666665,
     "avg_hr": 136.2,
     "time_hhmm": "10:05"
+  },
+  {
+    "id": 19480735511,
+    "date": "2026-07-26",
+    "start_iso": "2026-07-26T23:42:40Z",
+    "distance_km": 3.275,
+    "moving_time_s": 946,
+    "moving_time_min": 15.766666666666667,
+    "avg_hr": 131.3,
+    "time_hhmm": "23:42"
   }
 ]

@@ -1,16 +1,5 @@
 [
   {
-    "id": 20402065067,
-    "date": "2026-09-30",
-    "start_iso": "2026-09-30T23:36:19Z",
-    "start_utc": "2026-10-01T04:36:19.000Z",
-    "distance_km": 3.267,
-    "moving_time_s": 870,
-    "moving_time_min": 14.5,
-    "avg_hr": 136,
-    "time_hhmm": "23:36"
-  },
-  {
     "id": 20418316185,
     "date": "2026-10-01",
     "start_iso": "2026-10-01T23:18:23Z",
@@ -328,5 +317,93 @@
     "moving_time_min": 56.8,
     "avg_hr": 140,
     "time_hhmm": "08:11"
+  },
+  {
+    "id": 20791035327,
+    "date": "2026-10-26",
+    "start_iso": "2026-10-26T19:05:53Z",
+    "start_utc": "2026-10-27T00:05:53.000Z",
+    "distance_km": 3.2749,
+    "moving_time_s": 833,
+    "moving_time_min": 13.883333333333333,
+    "avg_hr": 128.9,
+    "time_hhmm": "19:05"
+  },
+  {
+    "id": 20791035313,
+    "date": "2026-10-27",
+    "start_iso": "2026-10-27T23:28:35Z",
+    "start_utc": "2026-10-28T04:28:35.000Z",
+    "distance_km": 3.2451999999999996,
+    "moving_time_s": 1026,
+    "moving_time_min": 17.1,
+    "avg_hr": 134.4,
+    "time_hhmm": "23:28"
+  },
+  {
+    "id": 20791035581,
+    "date": "2026-10-28",
+    "start_iso": "2026-10-28T23:18:33Z",
+    "start_utc": "2026-10-29T04:18:33.000Z",
+    "distance_km": 3.2711,
+    "moving_time_s": 948,
+    "moving_time_min": 15.8,
+    "avg_hr": 137.9,
+    "time_hhmm": "23:18"
+  },
+  {
+    "id": 20791035606,
+    "date": "2026-10-29",
+    "start_iso": "2026-10-29T08:00:01Z",
+    "start_utc": "2026-10-29T13:00:01.000Z",
+    "distance_km": 1.8496,
+    "moving_time_s": 502,
+    "moving_time_min": 8.366666666666667,
+    "avg_hr": 134.1,
+    "time_hhmm": "08:00"
+  },
+  {
+    "id": 20791041551,
+    "date": "2026-10-29",
+    "start_iso": "2026-10-29T08:11:03Z",
+    "start_utc": "2026-10-29T13:11:03.000Z",
+    "distance_km": 6.871899999999999,
+    "moving_time_s": 1558,
+    "moving_time_min": 25.966666666666665,
+    "avg_hr": 153.7,
+    "time_hhmm": "08:11"
+  },
+  {
+    "id": 20791041831,
+    "date": "2026-10-29",
+    "start_iso": "2026-10-29T08:48:02Z",
+    "start_utc": "2026-10-29T13:48:02.000Z",
+    "distance_km": 1.6696,
+    "moving_time_s": 515,
+    "moving_time_min": 8.583333333333334,
+    "avg_hr": 147.7,
+    "time_hhmm": "08:48"
+  },
+  {
+    "id": 20791041825,
+    "date": "2026-10-30",
+    "start_iso": "2026-10-30T08:01:54Z",
+    "start_utc": "2026-10-30T13:01:54.000Z",
+    "distance_km": 5.6327,
+    "moving_time_s": 1105,
+    "moving_time_min": 18.416666666666668,
+    "avg_hr": 132.1,
+    "time_hhmm": "08:01"
+  },
+  {
+    "id": 20791257099,
+    "date": "2026-10-30",
+    "start_iso": "2026-10-30T08:32:52Z",
+    "start_utc": "2026-10-30T13:32:52.000Z",
+    "distance_km": 3.4923,
+    "moving_time_s": 622,
+    "moving_time_min": 10.366666666666667,
+    "avg_hr": 143.2,
+    "time_hhmm": "08:32"
   }
 ]
